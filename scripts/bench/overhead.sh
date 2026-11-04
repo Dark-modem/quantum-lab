@@ -121,8 +121,14 @@ iran_iperf_client() {
   procs="$(source_adapter "$eng"; engine_processes)"
   chains="$(carrier_chains_for "$eng")"
   ssh_run "$QL_IRAN_HOST" "bash /tmp/qlab-sampler.sh '$iface' $chains -- $procs
-timeout 40 iperf3 -c $dst -p $port $args -J >/tmp/qlab-iperf-$tag.json 2>/dev/null
-echo IPERF_RC \$?
+timeout 45 iperf3 -c $dst -p $port $args -J >/tmp/qlab-iperf-$tag.json 2>/dev/null
+rc=\$?
+if ! grep -q '\"end\"' /tmp/qlab-iperf-$tag.json 2>/dev/null; then
+  sleep 3
+  timeout 45 iperf3 -c $dst -p $port $args -J >/tmp/qlab-iperf-$tag.json 2>/dev/null
+  rc=\$?
+fi
+echo IPERF_RC \$rc
 bash /tmp/qlab-sampler.sh '$iface' $chains -- $procs
 echo ===JSON===
 cat /tmp/qlab-iperf-$tag.json 2>/dev/null
@@ -348,7 +354,7 @@ main() {
     for dir in up down; do
       local flip=""; [ "$dir" = down ] && flip="-R"
       germany_iperf_server "$eng" "$bind" "$IPERF_PORT" "probe-$eng-$dir"
-      sleep 2
+      sleep 7
       local out
       out="$(iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "probe-$eng-$dir" "-t 8 $flip")"
       wait
@@ -385,7 +391,7 @@ except Exception: print(0)')"
       for rep in 1 2 3; do
         local tag="${eng}_${dir}_tcp_bulk_r$rep"
         germany_iperf_server "$eng" "$bind" "$IPERF_PORT" "$tag"
-        sleep 2
+        sleep 7
         iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
         wait
         parse_run "$tag" "$eng" "$dir" "tcp_bulk" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
