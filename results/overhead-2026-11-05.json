@@ -1,0 +1,3936 @@
+{
+ "date": "2026-11-05",
+ "unavailable_engines": [
+  "matrix"
+ ],
+ "summary": {
+  "none|down|http_small": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|down|tcp_bulk": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|down|udp_s1200": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|down|udp_s1400": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|down|udp_s512": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|down|udp_s64": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|up|http_small": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|up|tcp_bulk": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|up|udp_s1200": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|up|udp_s1400": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|up|udp_s512": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  },
+  "none|up|udp_s64": {
+   "n_successful": 0,
+   "n_total": 0,
+   "ratio_wire_payload_iran": null,
+   "ratio_wire_payload_germany": null,
+   "ratio_dev_bytes_payload": null,
+   "throughput_bps": null,
+   "udp_loss_percent": null,
+   "tcp_retransmits": null,
+   "cpu_busy_percent": {
+    "iran": null,
+    "germany": null
+   },
+   "proc_cpu_seconds_per_run": {}
+  }
+ },
+ "raw_rows": [
+  {
+   "engine": "matrix",
+   "unavailable": true
+  },
+  {
+   "tag": "none_up_tcp_bulk_r1",
+   "engine": "none",
+   "direction": "up",
+   "workload": "tcp_bulk",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      13216,
+      45,
+      14418,
+      37
+     ]
+    },
+    "germany": {
+     "eth0": [
+      26874,
+      98,
+      48626,
+      106
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 77.78,
+    "germany": 5.18
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 476,
+    "germany": 5719
+   },
+   "load": {
+    "iran": 0.24,
+    "germany": 0.21
+   }
+  },
+  {
+   "tag": "none_up_tcp_bulk_r2",
+   "engine": "none",
+   "direction": "up",
+   "workload": "tcp_bulk",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      6114,
+      53,
+      6222,
+      46
+     ]
+    },
+    "germany": {
+     "eth0": [
+      13372,
+      66,
+      15574,
+      67
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 53.66,
+    "germany": 9.65
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 420,
+    "germany": 4787
+   },
+   "load": {
+    "iran": 0.2,
+    "germany": 0.18
+   }
+  },
+  {
+   "tag": "none_up_tcp_bulk_r3",
+   "engine": "none",
+   "direction": "up",
+   "workload": "tcp_bulk",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      2740,
+      25,
+      3300,
+      20
+     ]
+    },
+    "germany": {
+     "eth0": [
+      14362,
+      77,
+      17292,
+      85
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 54.76,
+    "germany": 5.04
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 403,
+    "germany": 5990
+   },
+   "load": {
+    "iran": 0.25,
+    "germany": 0.15
+   }
+  },
+  {
+   "tag": "none_up_udp_s64_r1",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s64",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      2028,
+      25,
+      2260,
+      18
+     ]
+    },
+    "germany": {
+     "eth0": [
+      20534,
+      61,
+      22518,
+      64
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 52.5,
+    "germany": 7.63
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 411,
+    "germany": 3818
+   },
+   "load": {
+    "iran": 0.21,
+    "germany": 0.13
+   }
+  },
+  {
+   "tag": "none_up_udp_s64_r2",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s64",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      5200,
+      65,
+      5128,
+      46
+     ]
+    },
+    "germany": {
+     "eth0": [
+      16012,
+      87,
+      18638,
+      85
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 57.14,
+    "germany": 7.2
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 427,
+    "germany": 5235
+   },
+   "load": {
+    "iran": 0.18,
+    "germany": 0.11
+   }
+  },
+  {
+   "tag": "none_up_udp_s64_r3",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s64",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      4480,
+      52,
+      4856,
+      42
+     ]
+    },
+    "germany": {
+     "eth0": [
+      15049,
+      84,
+      18264,
+      79
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 57.78,
+    "germany": 5.03
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 388,
+    "germany": 6314
+   },
+   "load": {
+    "iran": 0.15,
+    "germany": 0.09
+   }
+  },
+  {
+   "tag": "none_up_udp_s512_r1",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s512",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      2240,
+      23,
+      3888,
+      29
+     ]
+    },
+    "germany": {
+     "eth0": [
+      25948,
+      90,
+      25620,
+      82
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 86.96,
+    "germany": 5.94
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 425,
+    "germany": 6165
+   },
+   "load": {
+    "iran": 0.29,
+    "germany": 0.08
+   }
+  },
+  {
+   "tag": "none_up_udp_s512_r2",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s512",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      7299,
+      58,
+      8402,
+      52
+     ]
+    },
+    "germany": {
+     "eth0": [
+      14800,
+      80,
+      17116,
+      75
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 18.71,
+    "germany": 8.24
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1405,
+    "germany": 5982
+   },
+   "load": {
+    "iran": 0.32,
+    "germany": 0.46
+   }
+  },
+  {
+   "tag": "none_up_udp_s512_r3",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s512",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      17,
+      1407
+     ],
+     "c_none_tcp_5201_out": [
+      13,
+      1023
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      5438,
+      23,
+      6232,
+      25
+     ]
+    },
+    "germany": {
+     "eth0": [
+      12895581,
+      81404,
+      100606,
+      318
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 51.28,
+    "germany": 12.16
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {}
+   },
+   "window_ms": {
+    "iran": 513,
+    "germany": 23620
+   },
+   "load": {
+    "iran": 0.41,
+    "germany": 0.43
+   }
+  },
+  {
+   "tag": "none_up_udp_s1200_r1",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s1200",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      13433,
+      54,
+      17964,
+      51
+     ]
+    },
+    "germany": {
+     "eth0": [
+      31552,
+      98,
+      33606,
+      94
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 100.0,
+    "germany": 5.02
+   },
+   "proc_cpu_seconds": {
+    "iran": {
+     "iperf3": 0.0
+    },
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 636,
+    "germany": 6611
+   },
+   "load": {
+    "iran": 0.94,
+    "germany": 0.49
+   }
+  },
+  {
+   "tag": "none_up_udp_s1200_r2",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s1200",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      14606,
+      110,
+      15984,
+      90
+     ]
+    },
+    "germany": {
+     "eth0": [
+      20412,
+      91,
+      23286,
+      89
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 33.11,
+    "germany": 6.91
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1522,
+    "germany": 5165
+   },
+   "load": {
+    "iran": 0.73,
+    "germany": 0.41
+   }
+  },
+  {
+   "tag": "none_up_udp_s1200_r3",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s1200",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      5582,
+      39,
+      7166,
+      29
+     ]
+    },
+    "germany": {
+     "eth0": [
+      15265,
+      81,
+      17346,
+      75
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 73.58,
+    "germany": 6.38
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 423,
+    "germany": 5292
+   },
+   "load": {
+    "iran": 0.75,
+    "germany": 0.42
+   }
+  },
+  {
+   "tag": "none_up_udp_s1400_r1",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s1400",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      2156,
+      24,
+      2874,
+      22
+     ]
+    },
+    "germany": {
+     "eth0": [
+      13494,
+      66,
+      20296,
+      71
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 51.28,
+    "germany": 5.56
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 389,
+    "germany": 5175
+   },
+   "load": {
+    "iran": 0.79,
+    "germany": 0.36
+   }
+  },
+  {
+   "tag": "none_up_udp_s1400_r2",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s1400",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      20810,
+      76,
+      21868,
+      78
+     ]
+    },
+    "germany": {
+     "eth0": [
+      32851,
+      116,
+      43630,
+      111
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 29.2,
+    "germany": 7.2
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1424,
+    "germany": 5440
+   },
+   "load": {
+    "iran": 0.66,
+    "germany": 0.38
+   }
+  },
+  {
+   "tag": "none_up_udp_s1400_r3",
+   "engine": "none",
+   "direction": "up",
+   "workload": "udp_s1400",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      7162,
+      27,
+      7980,
+      30
+     ]
+    },
+    "germany": {
+     "eth0": [
+      27950,
+      89,
+      34466,
+      92
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 50.0,
+    "germany": 5.34
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 403,
+    "germany": 6013
+   },
+   "load": {
+    "iran": 0.56,
+    "germany": 0.32
+   }
+  },
+  {
+   "tag": "none_up_http_r1",
+   "engine": "none",
+   "direction": "up",
+   "workload": "http_small",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": 0,
+   "throughput_bps": 0.0,
+   "duration_s": 19.991,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": 200,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      135498,
+      873,
+      132751,
+      566
+     ]
+    },
+    "germany": {
+     "eth0": [
+      68180,
+      415,
+      109710,
+      441
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 24.12,
+    "germany": 3.45
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 19991,
+    "germany": 25209
+   },
+   "load": {
+    "iran": 0.57,
+    "germany": 0.2
+   }
+  },
+  {
+   "tag": "none_up_http_r2",
+   "engine": "none",
+   "direction": "up",
+   "workload": "http_small",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": 0,
+   "throughput_bps": 0.0,
+   "duration_s": 19.916,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": 200,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      151901,
+      955,
+      177331,
+      776
+     ]
+    },
+    "germany": {
+     "eth0": [
+      93422,
+      486,
+      98982,
+      481
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 29.26,
+    "germany": 4.48
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 19916,
+    "germany": 24454
+   },
+   "load": {
+    "iran": 0.72,
+    "germany": 0.2
+   }
+  },
+  {
+   "tag": "none_up_http_r3",
+   "engine": "none",
+   "direction": "up",
+   "workload": "http_small",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": 0,
+   "throughput_bps": 0.0,
+   "duration_s": 19.728,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": 200,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      88010,
+      738,
+      85485,
+      529
+     ]
+    },
+    "germany": {
+     "eth0": [
+      65069,
+      399,
+      62410,
+      377
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 23.67,
+    "germany": 3.47
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 19728,
+    "germany": 25781
+   },
+   "load": {
+    "iran": 0.63,
+    "germany": 0.31
+   }
+  },
+  {
+   "tag": "none_down_tcp_bulk_r1",
+   "engine": "none",
+   "direction": "down",
+   "workload": "tcp_bulk",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      2136,
+      20,
+      3770,
+      28
+     ]
+    },
+    "germany": {
+     "eth0": [
+      16395,
+      80,
+      18192,
+      74
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 80.95,
+    "germany": 6.63
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 430,
+    "germany": 4999
+   },
+   "load": {
+    "iran": 0.7,
+    "germany": 0.28
+   }
+  },
+  {
+   "tag": "none_down_tcp_bulk_r2",
+   "engine": "none",
+   "direction": "down",
+   "workload": "tcp_bulk",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      3092,
+      18,
+      4308,
+      26
+     ]
+    },
+    "germany": {
+     "eth0": [
+      17675,
+      68,
+      23411,
+      67
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 53.66,
+    "germany": 6.64
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 387,
+    "germany": 4689
+   },
+   "load": {
+    "iran": 0.64,
+    "germany": 0.24
+   }
+  },
+  {
+   "tag": "none_down_tcp_bulk_r3",
+   "engine": "none",
+   "direction": "down",
+   "workload": "tcp_bulk",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      12274,
+      40,
+      13292,
+      43
+     ]
+    },
+    "germany": {
+     "eth0": [
+      22724,
+      74,
+      26112,
+      77
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 54.76,
+    "germany": 8.05
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 393,
+    "germany": 5009
+   },
+   "load": {
+    "iran": 0.54,
+    "germany": 0.2
+   }
+  },
+  {
+   "tag": "none_down_udp_s64_r1",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s64",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      3,
+      180
+     ],
+     "c_none_tcp_5201_out": [
+      3,
+      120
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      35056,
+      101,
+      45206,
+      125
+     ]
+    },
+    "germany": {
+     "eth0": [
+      28905,
+      90,
+      33810,
+      91
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 25.6,
+    "germany": 7.27
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 2558,
+    "germany": 4622
+   },
+   "load": {
+    "iran": 0.54,
+    "germany": 0.18
+   }
+  },
+  {
+   "tag": "none_down_udp_s64_r2",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s64",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      2810,
+      18,
+      4024,
+      23
+     ]
+    },
+    "germany": {
+     "eth0": [
+      20967,
+      116,
+      24741,
+      115
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 53.85,
+    "germany": 6.02
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 396,
+    "germany": 6515
+   },
+   "load": {
+    "iran": 0.58,
+    "germany": 0.16
+   }
+  },
+  {
+   "tag": "none_down_udp_s64_r3",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s64",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      15,
+      1279
+     ],
+     "c_none_tcp_5201_out": [
+      16,
+      1193
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      5603,
+      46,
+      6366,
+      30
+     ]
+    },
+    "germany": {
+     "eth0": [
+      17128349,
+      28160,
+      91691,
+      410
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 61.9,
+    "germany": 9.01
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {}
+   },
+   "window_ms": {
+    "iran": 558,
+    "germany": 21699
+   },
+   "load": {
+    "iran": 0.49,
+    "germany": 0.24
+   }
+  },
+  {
+   "tag": "none_down_udp_s512_r1",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s512",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      3176,
+      32,
+      4784,
+      38
+     ]
+    },
+    "germany": {
+     "eth0": [
+      37284,
+      102,
+      37642,
+      98
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 52.5,
+    "germany": 6.34
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 391,
+    "germany": 5472
+   },
+   "load": {
+    "iran": 0.32,
+    "germany": 0.2
+   }
+  },
+  {
+   "tag": "none_down_udp_s512_r2",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s512",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      5172,
+      18,
+      5964,
+      18
+     ]
+    },
+    "germany": {
+     "eth0": [
+      21108,
+      78,
+      29212,
+      82
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 50.0,
+    "germany": 6.15
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 414,
+    "germany": 5402
+   },
+   "load": {
+    "iran": 0.27,
+    "germany": 0.25
+   }
+  },
+  {
+   "tag": "none_down_udp_s512_r3",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s512",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      10519,
+      45,
+      10774,
+      39
+     ]
+    },
+    "germany": {
+     "eth0": [
+      26238,
+      101,
+      29150,
+      95
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 73.08,
+    "germany": 5.18
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 423,
+    "germany": 6607
+   },
+   "load": {
+    "iran": 0.23,
+    "germany": 0.29
+   }
+  },
+  {
+   "tag": "none_down_udp_s1200_r1",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s1200",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      12604,
+      51,
+      14156,
+      58
+     ]
+    },
+    "germany": {
+     "eth0": [
+      31700,
+      95,
+      30900,
+      88
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 29.5,
+    "germany": 5.0
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1407,
+    "germany": 6556
+   },
+   "load": {
+    "iran": 0.19,
+    "germany": 0.24
+   }
+  },
+  {
+   "tag": "none_down_udp_s1200_r2",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s1200",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      11309,
+      44,
+      13598,
+      58
+     ]
+    },
+    "germany": {
+     "eth0": [
+      16100,
+      85,
+      18752,
+      82
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 17.45,
+    "germany": 6.14
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1493,
+    "germany": 5556
+   },
+   "load": {
+    "iran": 0.32,
+    "germany": 0.28
+   }
+  },
+  {
+   "tag": "none_down_udp_s1200_r3",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s1200",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      5174,
+      32,
+      6106,
+      36
+     ]
+    },
+    "germany": {
+     "eth0": [
+      18802,
+      86,
+      22742,
+      83
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 55.56,
+    "germany": 8.56
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 411,
+    "germany": 4411
+   },
+   "load": {
+    "iran": 0.34,
+    "germany": 0.24
+   }
+  },
+  {
+   "tag": "none_down_udp_s1400_r1",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s1400",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      18745,
+      67,
+      24962,
+      82
+     ]
+    },
+    "germany": {
+     "eth0": [
+      32884,
+      84,
+      34046,
+      78
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 28.17,
+    "germany": 6.48
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1399,
+    "germany": 4427
+   },
+   "load": {
+    "iran": 0.29,
+    "germany": 0.2
+   }
+  },
+  {
+   "tag": "none_down_udp_s1400_r2",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s1400",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      2,
+      120
+     ],
+     "c_none_tcp_5201_out": [
+      2,
+      80
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      16081,
+      114,
+      12156,
+      70
+     ]
+    },
+    "germany": {
+     "eth0": [
+      18051,
+      103,
+      21808,
+      97
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 18.12,
+    "germany": 7.47
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 1490,
+    "germany": 5067
+   },
+   "load": {
+    "iran": 0.24,
+    "germany": 0.19
+   }
+  },
+  {
+   "tag": "none_down_udp_s1400_r3",
+   "engine": "none",
+   "direction": "down",
+   "workload": "udp_s1400",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": null,
+   "throughput_bps": null,
+   "duration_s": null,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": null,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      7668,
+      43,
+      12236,
+      43
+     ]
+    },
+    "germany": {
+     "eth0": [
+      18934,
+      85,
+      21052,
+      78
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 62.22,
+    "germany": 8.81
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 422,
+    "germany": 4384
+   },
+   "load": {
+    "iran": 0.22,
+    "germany": 0.16
+   }
+  },
+  {
+   "tag": "none_down_http_r1",
+   "engine": "none",
+   "direction": "down",
+   "workload": "http_small",
+   "rep": 1,
+   "iperf_rc": 1,
+   "payload_bytes": 0,
+   "throughput_bps": 0.0,
+   "duration_s": 20.214,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": 200,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      1,
+      60
+     ],
+     "c_none_tcp_5201_out": [
+      1,
+      40
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      196389,
+      1271,
+      211790,
+      769
+     ]
+    },
+    "germany": {
+     "eth0": [
+      112687,
+      512,
+      120700,
+      485
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 29.21,
+    "germany": 4.27
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 20214,
+    "germany": 25190
+   },
+   "load": {
+    "iran": 0.58,
+    "germany": 0.09
+   }
+  },
+  {
+   "tag": "none_down_http_r2",
+   "engine": "none",
+   "direction": "down",
+   "workload": "http_small",
+   "rep": 2,
+   "iperf_rc": 1,
+   "payload_bytes": 0,
+   "throughput_bps": 0.0,
+   "duration_s": 20.026,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": 200,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      162235,
+      1179,
+      152955,
+      704
+     ]
+    },
+    "germany": {
+     "eth0": [
+      85467,
+      492,
+      86104,
+      458
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 29.86,
+    "germany": 4.3
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 20026,
+    "germany": 24791
+   },
+   "load": {
+    "iran": 0.45,
+    "germany": 0.29
+   }
+  },
+  {
+   "tag": "none_down_http_r3",
+   "engine": "none",
+   "direction": "down",
+   "workload": "http_small",
+   "rep": 3,
+   "iperf_rc": 1,
+   "payload_bytes": 0,
+   "throughput_bps": 0.0,
+   "duration_s": 19.94,
+   "retransmits": null,
+   "udp_loss_percent": null,
+   "http_errors": 200,
+   "wire_bytes": {
+    "iran": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    },
+    "germany": {
+     "c_none_tcp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_in": [
+      0,
+      0
+     ],
+     "c_none_udp_5201_out": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_in": [
+      0,
+      0
+     ],
+     "c_none_tcp_18080_out": [
+      0,
+      0
+     ]
+    }
+   },
+   "dev_delta": {
+    "iran": {
+     "eth0": [
+      177906,
+      908,
+      195350,
+      901
+     ]
+    },
+    "germany": {
+     "eth0": [
+      111401,
+      625,
+      112890,
+      561
+     ]
+    }
+   },
+   "cpu_busy_percent": {
+    "iran": 30.49,
+    "germany": 4.45
+   },
+   "proc_cpu_seconds": {
+    "iran": {},
+    "germany": {
+     "iperf3": 0.0
+    }
+   },
+   "window_ms": {
+    "iran": 19940,
+    "germany": 33932
+   },
+   "load": {
+    "iran": 1.29,
+    "germany": 0.25
+   }
+  }
+ ]
+}
