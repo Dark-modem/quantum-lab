@@ -96,7 +96,7 @@ remote_cat() { ssh_run "$1" "cat '$2' 2>/dev/null"; }
 # md5 verification. The Iran<->Germany leg often dies mid-transfer; chunking
 # makes the cost of one failure one chunk, not the whole file.
 push_bigfile() {
-  local h="$1" src="$2" dst="$3" chunkmb="${4:-4}"
+  local h="$1" src="$2" dst="$3" chunkmb="${4:-${QL_CHUNK_MB:-2}}"
   local tmpdir="$QLAB_OUT/xfer.$$"
   mkdir -p "$tmpdir"
   local base

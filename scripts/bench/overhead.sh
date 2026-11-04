@@ -420,7 +420,12 @@ except Exception: print(0)')"
   done
 
   nft_teardown_all
-  log "raw rows: $ROWS_FILE"
+  local rjson="$QLAB_RESULTS/overhead-$QLAB_TS.json"
+  local rmd="$QLAB_RESULTS/overhead-$QLAB_TS.md"
+  python "$BENCH_DIR/report.py" "$ROWS_FILE" "$rjson" "$rmd" "$QLAB_TS" && log "report: $rmd"
+  mkdir -p "$QLAB_RESULTS/raw" && cp "$ROWS_FILE" "$QLAB_RESULTS/raw/overhead-rows-$QLAB_TS.jsonl"
+  rm -f "$ROWS_FILE"
+  log "bench complete"
 }
 
 main "$@"
