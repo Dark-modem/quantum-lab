@@ -71,7 +71,13 @@ nft_setup_all() {
     local got
     got="$(ssh_run "$h" "nft list table inet qlab_acct 2>/dev/null | grep -c 'chain c_'")"
     if [ "${got:-0}" -lt "$expected" ]; then
-      fail "[$h] nft accounting incomplete: $got/$expected chains - aborting (rerun the bench)"
+      NFT_SETUP_RETRIES=$(( ${NFT_SETUP_RETRIES:-0} + 1 ))
+      if [ "$NFT_SETUP_RETRIES" -le 3 ]; then
+        log "WARN: [$h] nft accounting incomplete: $got/$expected chains - retrying whole setup (attempt $NFT_SETUP_RETRIES)"
+        nft_setup_all
+        return
+      fi
+      fail "[$h] nft accounting incomplete after retries: $got/$expected chains"
     fi
     log "[$h] nft accounting verified ($got/$expected chains)"
   done
