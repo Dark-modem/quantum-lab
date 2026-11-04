@@ -95,10 +95,15 @@ sample_remote() {
 # Synchronous; returns LISTENING or NOT-LISTENING.
 germany_iperf_start() {
   local bind="$1" port="$2"
-  ssh_run "$QL_GERMANY_HOST" "pkill -x iperf3 2>/dev/null; sleep 0.5
-nohup timeout 150 iperf3 -s -1 -B $bind -p $port >/dev/null 2>&1 &
+  ssh_run "$QL_GERMANY_HOST" "pkill -x iperf3 2>/dev/null; sleep 1
+pgrep -x iperf3 >/dev/null && { pkill -9 -x iperf3; sleep 0.5; }
+nohup timeout 150 iperf3 -s -B $bind -p $port >/dev/null 2>&1 &
 sleep 1
-ss -tln | grep -q ':$port ' && echo LISTENING || echo NOT-LISTENING" | tail -1
+if ss -tln | grep -q ':$port ' && [ \$(pgrep -c -x iperf3 2>/dev/null || echo 0) -eq 1 ]; then
+  echo LISTENING
+else
+  echo NOT-LISTENING
+fi" | tail -1
 }
 
 # germany_sample_pre/post <engine> <tag> — synchronous sampling around a
