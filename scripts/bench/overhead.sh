@@ -45,12 +45,17 @@ source_adapter() {
 
 # nft chain naming: c_<engine>_<proto>_<port>_in|_out ; one table for all engines.
 nft_setup_all() {
+  local expected=0
+  for eng in "${ENGINES[@]}"; do
+    source_adapter "$eng"
+    expected=$(( expected + 2 * $(engine_carrier_rules | grep -c .) ))
+  done
   for h in "$QL_IRAN_HOST" "$QL_GERMANY_HOST"; do
-    log "[$h] installing nft accounting table inet qlab_acct"
+    log "[$h] installing nft accounting table inet qlab_acct ($expected counter chains expected)"
     ssh_run "$h" 'nft delete table inet qlab_acct 2>/dev/null; true' >/dev/null
-    ssh_run "$h" 'nft add table inet qlab_acct
-nft add chain inet qlab_acct input "{ type filter hook input priority -300; }"
-nft add chain inet qlab_acct output "{ type filter hook output priority -300; }"' >/dev/null
+    ssh_run "$h" 'nft add table inet qlab_acct' >/dev/null
+    ssh_run "$h" 'nft add chain inet qlab_acct input "{ type filter hook input priority -300; }"' >/dev/null
+    ssh_run "$h" 'nft add chain inet qlab_acct output "{ type filter hook output priority -300; }"' >/dev/null
     for eng in "${ENGINES[@]}"; do
       source_adapter "$eng"
       local proto port dir
@@ -62,6 +67,13 @@ nft add chain inet qlab_acct output "{ type filter hook output priority -300; }"
         ssh_run "$h" "nft add rule inet qlab_acct input $proto dport $port jump c_${eng}_${proto}_${port}_in; nft add rule inet qlab_acct output $proto sport $port jump c_${eng}_${proto}_${port}_out" >/dev/null
       done < <(engine_carrier_rules)
     done
+    # verify - a silently-lost setup makes every wire count read zero
+    local got
+    got="$(ssh_run "$h" "nft list table inet qlab_acct 2>/dev/null | grep -c 'chain c_'")"
+    if [ "${got:-0}" -lt "$expected" ]; then
+      fail "[$h] nft accounting incomplete: $got/$expected chains - aborting (rerun the bench)"
+    fi
+    log "[$h] nft accounting verified ($got/$expected chains)"
   done
 }
 
@@ -352,19 +364,24 @@ main() {
     local dst bind; dst="$(engine_dest_ip)"; bind="$(engine_server_bind)"
     for dir in up down; do
       local flip=""; [ "$dir" = down ] && flip="-R"
-      local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
-      [ "$listen" = LISTENING ] || log "WARN: iperf server not listening for probe-$eng-$dir"
-      germany_sample_pre "$eng" "probe-$eng-$dir"
-      local out
-      out="$(iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "probe-$eng-$dir" "-t 8 $flip")"
-      germany_sample_post "$eng" "probe-$eng-$dir"
-      local bps
-      bps="$(printf '%s\n' "$out" | python -c '
+      local bps=0 p_attempt
+      for p_attempt in 1 2 3; do
+        local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
+        [ "$listen" = LISTENING ] || { log "WARN: iperf server not listening for probe-$eng-$dir (attempt $p_attempt)"; sleep 3; continue; }
+        germany_sample_pre "$eng" "probe-$eng-$dir"
+        local out
+        out="$(iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "probe-$eng-$dir" "-t 8 $flip")"
+        germany_sample_post "$eng" "probe-$eng-$dir"
+        bps="$(printf '%s\n' "$out" | python -c '
 import json,sys
 try:
     t=sys.stdin.read(); j=json.loads(t.split("===JSON===")[1])
     print(int(j.get("end",{}).get("sum_received",{}).get("bits_per_second") or 0))
 except Exception: print(0)')"
+        [ "$bps" -gt 0 ] && break
+        log "[$eng] $dir TCP probe attempt $p_attempt failed (0 bps) - retrying"
+        sleep 3
+      done
       UDP_RATE_BPS["${eng}_${dir}"]="$bps"
       log "[$eng] $dir TCP probe: $bps bps"
     done
@@ -390,34 +407,58 @@ except Exception: print(0)')"
 
       for rep in 1 2 3; do
         local tag="${eng}_${dir}_tcp_bulk_r$rep"
-        local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
-        [ "$listen" = LISTENING ] || log "WARN: iperf server not listening for $tag"
-        germany_sample_pre "$eng" "$tag"
-        iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
-        germany_sample_post "$eng" "$tag"
+        local attempt done_run=0 crc
+        for attempt in 1 2 3; do
+          local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
+          [ "$listen" = LISTENING ] || { log "WARN: server not listening for $tag (attempt $attempt)"; sleep 3; continue; }
+          germany_sample_pre "$eng" "$tag"
+          iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
+          germany_sample_post "$eng" "$tag"
+          crc="$(grep -m1 '^IPERF_RC' "$QLAB_OUT/cli-$tag.txt" | awk '{print $2}')"
+          if [ "$crc" = 0 ] && grep -q '"end"' "$QLAB_OUT/cli-$tag.txt"; then done_run=1; break; fi
+          log "WARN: $tag attempt $attempt failed (rc=$crc) - clean retry (new delta window)"
+          sleep 2
+        done
         parse_run "$tag" "$eng" "$dir" "tcp_bulk" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
+        [ "$done_run" = 1 ] || log "FAIL: $tag failed after 3 attempts (recorded as failed rep)"
         sleep 1
       done
 
       for s in $UDP_SIZES; do
         for rep in 1 2 3; do
           local tag="${eng}_${dir}_udp_s${s}_r$rep"
-          local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
-          [ "$listen" = LISTENING ] || log "WARN: iperf server not listening for $tag"
-          germany_sample_pre "$eng" "$tag"
-          iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip $udpargs -l $s" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
-          germany_sample_post "$eng" "$tag"
+          local attempt done_run=0 crc
+          for attempt in 1 2 3; do
+            local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
+            [ "$listen" = LISTENING ] || { log "WARN: server not listening for $tag (attempt $attempt)"; sleep 3; continue; }
+            germany_sample_pre "$eng" "$tag"
+            iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip $udpargs -l $s" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
+            germany_sample_post "$eng" "$tag"
+            crc="$(grep -m1 '^IPERF_RC' "$QLAB_OUT/cli-$tag.txt" | awk '{print $2}')"
+            if [ "$crc" = 0 ] && grep -q '"end"' "$QLAB_OUT/cli-$tag.txt"; then done_run=1; break; fi
+            log "WARN: $tag attempt $attempt failed (rc=$crc) - clean retry (new delta window)"
+            sleep 2
+          done
           parse_run "$tag" "$eng" "$dir" "udp_s$s" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
+          [ "$done_run" = 1 ] || log "FAIL: $tag failed after 3 attempts (recorded as failed rep)"
           sleep 1
         done
       done
 
       for rep in 1 2 3; do
         local tag="${eng}_${dir}_http_r$rep"
-        germany_sample_pre "$eng" "$tag"
-        iran_http_client "$eng" "$dst" "$http_port" "$tag" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
-        germany_sample_post "$eng" "$tag"
+        local attempt done_run=0 hsum
+        for attempt in 1 2 3; do
+          germany_sample_pre "$eng" "$tag"
+          iran_http_client "$eng" "$dst" "$http_port" "$tag" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
+          germany_sample_post "$eng" "$tag"
+          hsum="$(grep -m1 '^HTTP_SUM' "$QLAB_OUT/cli-$tag.txt" | awk '{print $2 + $3 + $4}')"
+          if [ "${hsum:-0}" -gt 1000 ]; then done_run=1; break; fi
+          log "WARN: $tag attempt $attempt got ~0 payload - retrying"
+          sleep 2
+        done
         parse_run "$tag" "$eng" "$dir" "http_small" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
+        [ "$done_run" = 1 ] || log "FAIL: $tag failed after 3 attempts (recorded as failed rep)"
         sleep 1
       done
     done
