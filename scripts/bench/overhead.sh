@@ -116,7 +116,7 @@ germany_iperf_start() {
   local bind="$1" port="$2"
   ssh_run "$QL_GERMANY_HOST" "pkill -x iperf3 2>/dev/null; sleep 1
 pgrep -x iperf3 >/dev/null && { pkill -9 -x iperf3; sleep 0.5; }
-nohup timeout 150 iperf3 -s -B $bind -p $port >/dev/null 2>&1 &
+nohup timeout 300 iperf3 -s -B $bind -p $port >/tmp/qlab-iperf-srv.log 2>&1 &
 sleep 1
 if ss -tln | grep -q ':$port ' && [ \$(pgrep -c -x iperf3 2>/dev/null || echo 0) -eq 1 ]; then
   echo LISTENING

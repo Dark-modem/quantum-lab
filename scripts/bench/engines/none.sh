@@ -21,15 +21,19 @@ engine_ready() {
   ssh_run "$QL_IRAN_HOST" "ping -c 2 -W 3 $dip >/dev/null && echo up || echo down" | grep -q up
 }
 
+# NOTE: the baseline must NOT use the mesh's forwarded port (the Matrix DNAT
+# hijacks public :5201 to the node), so the baseline iperf3 uses its own port.
+IPERF_PORT_BASE=5301
+
 engine_dest_ip()      { germany_public_ip; }
 engine_server_bind()  { echo "0.0.0.0"; }
 engine_http_bind()    { echo "0.0.0.0"; }
 engine_http_port()    { echo 18080; }
 
 engine_carrier_rules() {
-  # iperf3 port + the HTTP test port, on the public path
-  echo "tcp $IPERF_PORT"
-  echo "udp $IPERF_PORT"
+  # baseline iperf3 port + the HTTP test port, on the public path
+  echo "tcp $IPERF_PORT_BASE"
+  echo "udp $IPERF_PORT_BASE"
   echo "tcp 18080"
 }
 
