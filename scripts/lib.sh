@@ -91,6 +91,41 @@ ssh_push_stdin() {
 # read_counter <host> <procfile-or-cmd> — trivial wrapper.
 remote_cat() { ssh_run "$1" "cat '$2' 2>/dev/null"; }
 
+# push_bigfile <alias> <local-file> <remote-path> [chunkMB]
+# gzip + split into chunks + per-chunk scp retry + remote reassembly with
+# md5 verification. The Iran<->Germany leg often dies mid-transfer; chunking
+# makes the cost of one failure one chunk, not the whole file.
+push_bigfile() {
+  local h="$1" src="$2" dst="$3" chunkmb="${4:-4}"
+  local tmpdir="$QLAB_OUT/xfer.$$"
+  mkdir -p "$tmpdir"
+  local base
+  base="$(basename "$src")"
+  log "[$h] pushing $(du -h "$src" | cut -f1) $base (gzipped, ${chunkmb}MB chunks)"
+  gzip -9c "$src" >"$tmpdir/$base.gz"
+  split -b "${chunkmb}M" -d -a 2 "$tmpdir/$base.gz" "$tmpdir/${base}.gz.part-"
+  local md5local
+  md5local="$(md5sum "$tmpdir/$base.gz" | awk '{print $1}')"
+  ssh_run "$h" "rm -rf /tmp/qlab-xfer && mkdir -p /tmp/qlab-xfer"
+  local part
+  for part in "$tmpdir/${base}.gz.part-"*; do
+    local p
+    p="$(basename "$part")"
+    local attempt ok=0
+    for attempt in 1 2 3 4 5 6; do
+      ssh_push "$h" "$part" "/tmp/qlab-xfer/$p" && ok=1 && break
+      log "[$h] chunk $p push failed (attempt $attempt/6)"
+    done
+    [ "$ok" = 1 ] || { rm -rf "$tmpdir"; fail "[$h] chunk $p failed after 6 attempts"; }
+  done
+  ssh_run "$h" "cat /tmp/qlab-xfer/${base}.gz.part-* > /tmp/qlab-xfer/$base.gz && rm -f /tmp/qlab-xfer/${base}.gz.part-* && echo '$md5local  /tmp/qlab-xfer/$base.gz' | md5sum -c -"
+  ssh_run "$h" "gunzip -t /tmp/qlab-xfer/$base.gz && gunzip -c /tmp/qlab-xfer/$base.gz > '$dst' && chmod 755 '$dst' 2>/dev/null; rm -rf /tmp/qlab-xfer"
+  local md5remote
+  md5remote="$(ssh_run "$h" "md5sum '$dst' | awk '{print \$1}'")"
+  rm -rf "$tmpdir"
+  log "[$h] pushed $dst (md5 $md5remote)"
+}
+
 require_bin() {
   command -v "$1" >/dev/null 2>&1 || fail "required local binary not found: $1"
 }

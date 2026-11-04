@@ -59,7 +59,7 @@ ship_binary() { # ship_binary <alias> <local-bin> <remote-path>
   log "[$h] shipping $(basename "$src") -> $dst"
   # keep exactly one previous generation for --rollback
   ssh_run "$h" "if [ -f '$dst' ]; then cp -a '$dst' '$dst.prev'; fi"
-  ssh_push "$h" "$src" "$dst.new"
+  push_bigfile "$h" "$src" "$dst.new"
   ssh_run "$h" "mv '$dst.new' '$dst' && chmod 755 '$dst'"
 }
 
