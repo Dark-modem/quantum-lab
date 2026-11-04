@@ -90,27 +90,21 @@ sample_remote() {
   ssh_run "$h" "bash /tmp/qlab-sampler.sh '$iface' $chains -- $procs"
 }
 
-# germany_iperf_server <engine> <bind-ip> <port> <tag> — background: sample,
-# run one-off iperf3 server, sample again; output -> out/ger-<tag>.txt
-germany_iperf_server() {
-  local eng="$1" bind="$2" port="$3" tag="$4"
-  (
-    sample_remote "$QL_GERMANY_HOST" "$eng" >"$QLAB_OUT/ger-$tag.txt" 2>/dev/null
-    ssh_run "$QL_GERMANY_HOST" "timeout 90 iperf3 -s -1 -B $bind -p $port >/dev/null 2>&1; true"
-    sample_remote "$QL_GERMANY_HOST" "$eng" >>"$QLAB_OUT/ger-$tag.txt" 2>/dev/null
-  ) &
+# germany_iperf_start <bind-ip> <port> — kill leftovers, start a one-off
+# iperf3 server detached (150 s window), then VERIFY it is listening.
+# Synchronous; returns LISTENING or NOT-LISTENING.
+germany_iperf_start() {
+  local bind="$1" port="$2"
+  ssh_run "$QL_GERMANY_HOST" "pkill -x iperf3 2>/dev/null; sleep 0.5
+nohup timeout 150 iperf3 -s -1 -B $bind -p $port >/dev/null 2>&1 &
+sleep 1
+ss -tln | grep -q ':$port ' && echo LISTENING || echo NOT-LISTENING" | tail -1
 }
 
-# germany_http_sample <engine> <tag> — background: sample, wait for the run's
-# sentinel file, sample again. Driver touches the sentinel after client finishes.
-germany_http_sample() {
-  local eng="$1" tag="$2"
-  (
-    sample_remote "$QL_GERMANY_HOST" "$eng" >"$QLAB_OUT/ger-$tag.txt" 2>/dev/null
-    ssh_run "$QL_GERMANY_HOST" "i=0; while [ ! -f /tmp/qlab-http-done-$tag ] && [ \$i -lt 240 ]; do sleep 1; i=\$((i+1)); done; rm -f /tmp/qlab-http-done-$tag; true"
-    sample_remote "$QL_GERMANY_HOST" "$eng" >>"$QLAB_OUT/ger-$tag.txt" 2>/dev/null
-  ) &
-}
+# germany_sample_pre/post <engine> <tag> — synchronous sampling around a
+# blocking client run.
+germany_sample_pre()  { sample_remote "$QL_GERMANY_HOST" "$1" >"$QLAB_OUT/ger-$2.txt" 2>/dev/null; }
+germany_sample_post() { sample_remote "$QL_GERMANY_HOST" "$1" >>"$QLAB_OUT/ger-$2.txt" 2>/dev/null; }
 
 # iran_iperf_client <engine> <dst> <port> <tag> <iperf-args...>
 iran_iperf_client() {
@@ -353,11 +347,12 @@ main() {
     local dst bind; dst="$(engine_dest_ip)"; bind="$(engine_server_bind)"
     for dir in up down; do
       local flip=""; [ "$dir" = down ] && flip="-R"
-      germany_iperf_server "$eng" "$bind" "$IPERF_PORT" "probe-$eng-$dir"
-      sleep 7
+      local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
+      [ "$listen" = LISTENING ] || log "WARN: iperf server not listening for probe-$eng-$dir"
+      germany_sample_pre "$eng" "probe-$eng-$dir"
       local out
       out="$(iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "probe-$eng-$dir" "-t 8 $flip")"
-      wait
+      germany_sample_post "$eng" "probe-$eng-$dir"
       local bps
       bps="$(printf '%s\n' "$out" | python -c '
 import json,sys
@@ -390,10 +385,11 @@ except Exception: print(0)')"
 
       for rep in 1 2 3; do
         local tag="${eng}_${dir}_tcp_bulk_r$rep"
-        germany_iperf_server "$eng" "$bind" "$IPERF_PORT" "$tag"
-        sleep 7
+        local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
+        [ "$listen" = LISTENING ] || log "WARN: iperf server not listening for $tag"
+        germany_sample_pre "$eng" "$tag"
         iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
-        wait
+        germany_sample_post "$eng" "$tag"
         parse_run "$tag" "$eng" "$dir" "tcp_bulk" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
         sleep 1
       done
@@ -401,10 +397,11 @@ except Exception: print(0)')"
       for s in $UDP_SIZES; do
         for rep in 1 2 3; do
           local tag="${eng}_${dir}_udp_s${s}_r$rep"
-          germany_iperf_server "$eng" "$bind" "$IPERF_PORT" "$tag"
-          sleep 2
+          local listen; listen="$(germany_iperf_start "$bind" "$IPERF_PORT")"
+          [ "$listen" = LISTENING ] || log "WARN: iperf server not listening for $tag"
+          germany_sample_pre "$eng" "$tag"
           iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip $udpargs -l $s" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
-          wait
+          germany_sample_post "$eng" "$tag"
           parse_run "$tag" "$eng" "$dir" "udp_s$s" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
           sleep 1
         done
@@ -412,11 +409,9 @@ except Exception: print(0)')"
 
       for rep in 1 2 3; do
         local tag="${eng}_${dir}_http_r$rep"
-        germany_http_sample "$eng" "$tag"
-        sleep 1
+        germany_sample_pre "$eng" "$tag"
         iran_http_client "$eng" "$dst" "$http_port" "$tag" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
-        ssh_run "$QL_GERMANY_HOST" "touch /tmp/qlab-http-done-$tag" >/dev/null
-        wait
+        germany_sample_post "$eng" "$tag"
         parse_run "$tag" "$eng" "$dir" "http_small" "$rep" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" || true
         sleep 1
       done
