@@ -16,11 +16,6 @@
 ENGINE_NAME="none"
 ENGINE_DESC="Baseline (no tunnel, direct Internet path)"
 
-# Resolve the germany public IP from the local ssh config — never hardcode IPs.
-germany_public_ip() {
-  ssh -G "$QL_GERMANY_HOST" 2>/dev/null | awk '/^hostname /{print $2}' | head -1
-}
-
 engine_ready() {
   local dip; dip="$(germany_public_ip)"
   ssh_run "$QL_IRAN_HOST" "ping -c 2 -W 3 $dip >/dev/null && echo up || echo down" | grep -q up

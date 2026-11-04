@@ -73,7 +73,7 @@ ssh_push() {
   local attempt mopts
   mopts="$(mux_opts_for "$h")"
   for attempt in 1 2 3; do
-    scp -q -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new $mopts "$src" "$h:$dst" && return 0
+    timeout "${QL_SCP_TIMEOUT:-240}" scp -q -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new $mopts "$src" "$h:$dst" && return 0
     log "scp to $h failed (attempt $attempt/3); retrying in 8s"
     sleep 8
   done
@@ -109,21 +109,39 @@ push_bigfile() {
   ssh_run "$h" "rm -rf /tmp/qlab-xfer && mkdir -p /tmp/qlab-xfer"
   local part
   for part in "$tmpdir/${base}.gz.part-"*; do
-    local p
+    local p pmd5
     p="$(basename "$part")"
+    pmd5="$(md5sum "$part" | awk '{print $1}')"
     local attempt ok=0
     for attempt in 1 2 3 4 5 6; do
-      ssh_push "$h" "$part" "/tmp/qlab-xfer/$p" && ok=1 && break
-      log "[$h] chunk $p push failed (attempt $attempt/6)"
+      if ssh_push "$h" "$part" "/tmp/qlab-xfer/$p"; then
+        local rmd5
+        rmd5="$(ssh_run "$h" "md5sum /tmp/qlab-xfer/$p 2>/dev/null | awk '{print \$1}'")"
+        if [ "$rmd5" = "$pmd5" ]; then ok=1; break; fi
+        log "[$h] chunk $p corrupt on server (md5 mismatch) — re-pushing"
+      else
+        log "[$h] chunk $p push failed (attempt $attempt/6)"
+      fi
+      sleep 3
     done
     [ "$ok" = 1 ] || { rm -rf "$tmpdir"; fail "[$h] chunk $p failed after 6 attempts"; }
   done
-  ssh_run "$h" "cat /tmp/qlab-xfer/${base}.gz.part-* > /tmp/qlab-xfer/$base.gz && rm -f /tmp/qlab-xfer/${base}.gz.part-* && echo '$md5local  /tmp/qlab-xfer/$base.gz' | md5sum -c -"
+  ssh_run "$h" "cat /tmp/qlab-xfer/${base}.gz.part-* > /tmp/qlab-xfer/$base.gz && rm -f /tmp/qlab-xfer/${base}.gz.part-* && echo '$md5local  /tmp/qlab-xfer/$base.gz' | md5sum -c -" >/dev/null
   ssh_run "$h" "gunzip -t /tmp/qlab-xfer/$base.gz && gunzip -c /tmp/qlab-xfer/$base.gz > '$dst' && chmod 755 '$dst' 2>/dev/null; rm -rf /tmp/qlab-xfer"
   local md5remote
-  md5remote="$(ssh_run "$h" "md5sum '$dst' | awk '{print \$1}'")"
+  md5remote="$(ssh_run "$h" "md5sum '$dst' 2>/dev/null | awk '{print \$1}'")"
   rm -rf "$tmpdir"
-  log "[$h] pushed $dst (md5 $md5remote)"
+  if [ "$md5remote" != "$(md5sum "$src" | awk '{print $1}')" ]; then
+    fail "[$h] final md5 mismatch for $dst (remote=$md5remote) — refusing to use it"
+  fi
+  log "[$h] pushed $dst (md5 verified)"
+}
+
+
+# germany_public_ip — resolve the germany host IP from the local ssh config
+# (keeps IPs out of the repo; scripts speak only in ssh aliases).
+germany_public_ip() {
+  ssh -G "$QL_GERMANY_HOST" 2>/dev/null | awk '/^hostname /{print $2}' | head -1
 }
 
 require_bin() {

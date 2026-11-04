@@ -93,7 +93,7 @@ step_enroll() {
     log "[$role] enroll token minted (${#tok} chars)"
     local h="$QL_IRAN_HOST" name="lab-iran"
     [ "$role" = foreign ] && h="$QL_GERMANY_HOST" && name="lab-germany"
-    local url="http://91.107.179.252:$PANEL_PORT/$(panel_base)"
+    local url="http://$(germany_public_ip):$PANEL_PORT/$(panel_base)"
     [ "$role" = foreign ] && url="http://127.0.0.1:$PANEL_PORT/$(panel_base)"
     if ssh_run "$h" "$AGENT_BIN_REMOTE enroll --server '$url' --token '$tok' --name '$name'"; then
       check "enroll-$role" 1 "$h"

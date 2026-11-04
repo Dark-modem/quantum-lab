@@ -17,8 +17,9 @@ MODE="deploy"
 case "${1:-}" in
   --rollback) MODE="rollback" ;;
   --wipe)     MODE="wipe" ;;
+  --units-only) MODE="units-only" ;;
   "") ;;
-  *) fail "usage: deploy.sh [--rollback|--wipe]" ;;
+  *) fail "usage: deploy.sh [--rollback|--wipe|--units-only]" ;;
 esac
 
 CRED_FILE="$HOME/.qlab-panel-cred"   # outside any repo; deleted at end of phase
@@ -142,7 +143,7 @@ do_deploy() {
   # Agent: both servers.
   for h in "$QL_IRAN_HOST" "$QL_GERMANY_HOST"; do
     ship_binary "$h" "$QLAB_OUT/quantum-agent" "$AGENT_BIN_REMOTE"
-    install_unit "$h" "$AGENT_UNIT" "$AGENT_BIN_REMOTE agent run" "Quantum Agent"
+    install_unit "$h" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
     ssh_run "$h" "systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
   done
 
@@ -214,8 +215,20 @@ do_wipe() {
   log "(remove manually if desired: lines in /root/.ssh/authorized_keys on both hosts)"
 }
 
+do_units_only() {
+  install_unit "$QL_GERMANY_HOST" "$PANEL_UNIT" "$PANEL_BIN_REMOTE" "Quantum Panel (management only)"
+  for h in "$QL_IRAN_HOST" "$QL_GERMANY_HOST"; do
+    install_unit "$h" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
+    ssh_run "$h" "systemctl daemon-reload; systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
+  done
+  ssh_run "$QL_GERMANY_HOST" "systemctl enable --now $PANEL_UNIT 2>/dev/null || systemctl restart $PANEL_UNIT"
+  wait_panel_http
+  log "units-only refresh complete"
+}
+
 case "$MODE" in
   deploy)   do_deploy ;;
   rollback) do_rollback ;;
   wipe)     do_wipe ;;
+  units-only) do_units_only ;;
 esac
