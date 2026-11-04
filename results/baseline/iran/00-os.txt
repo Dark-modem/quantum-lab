@@ -1,0 +1,34 @@
+[22:53:08] ssh tunnel-iran failed (rc=255, attempt 1/3); retrying in 8s
+PRETTY_NAME="Ubuntu 26.04 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=resolute
+LOGO=ubuntu-logo
+Linux ubuntu---1-vcpu---1-gb-ram 7.0.0-30-generic #30-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 18:22:54 UTC 2026 x86_64 GNU/Linux
+ 19:23:27 up 9 days, 10:33,  2 users,  load average: 0.06, 0.13, 0.11
+ Static hostname: ubuntu---1-vcpu---1-gb-ram
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: b97c607cbba04abd8dae04d907290cd2
+         Boot ID: 89c3bb94618244e6be6db16d36301c0e
+    Product UUID: b97c607c-bba0-4abd-8dae-04d907290cd2
+  Virtualization: kvm
+Operating System: Ubuntu 26.04 LTS
+          Kernel: Linux 7.0.0-30-generic
+    Architecture: x86-64
+ Hardware Vendor: OpenStack Foundation
+  Hardware Model: OpenStack Nova
+ Hardware Serial: b97c607c-bba0-4abd-8dae-04d907290cd2
+    Hardware SKU: 8.5.0
+Hardware Version: 25.2.2
+Firmware Version: 1.16.0-4.module_el8+603+e0ca2c01
+   Firmware Date: Tue 2014-04-01
+    Firmware Age: 12y 7month 4d

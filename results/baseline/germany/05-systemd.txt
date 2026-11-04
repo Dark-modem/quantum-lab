@@ -1,0 +1,3 @@
+[22:59:12] ssh tunnel-germany failed (rc=255, attempt 1/3); retrying in 8s
+[22:59:27] ssh tunnel-germany failed (rc=255, attempt 2/3); retrying in 8s
+[22:59:44] ssh tunnel-germany failed (rc=255, attempt 3/3); retrying in 8s

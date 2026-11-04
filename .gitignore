@@ -1,0 +1,16 @@
+# Build outputs — never commit binaries (results must stay reproducible)
+out/
+dist/
+
+# Local-only state (agent/panel secrets, enroll tokens, runtime scratch)
+.state/
+*.token
+*.secret
+cred-*.txt
+
+# Raw test artifacts that are too large or noisy for the repo
+results/raw/
+
+# Editor noise
+*.swp
+*.tmp

@@ -1,0 +1,8 @@
+Status: inactive
+---
+Available applications:
+  Nginx Full
+  Nginx HTTP
+  Nginx HTTPS
+  Nginx QUIC
+  OpenSSH
