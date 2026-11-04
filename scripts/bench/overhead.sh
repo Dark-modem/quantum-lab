@@ -62,9 +62,10 @@ nft_setup_all() {
       while read -r proto port; do
         [ -z "$proto" ] && continue
         for dir in in out; do
-          ssh_run "$h" "nft add chain inet qlab_acct c_${eng}_${proto}_${port}_${dir}; nft add rule inet qlab_acct c_${eng}_${proto}_${port}_${dir} counter return" >/dev/null
+          # </dev/null: ssh must not swallow the while-read loop's stdin
+          ssh_run "$h" "nft add chain inet qlab_acct c_${eng}_${proto}_${port}_${dir}; nft add rule inet qlab_acct c_${eng}_${proto}_${port}_${dir} counter return" >/dev/null </dev/null
         done
-        ssh_run "$h" "nft add rule inet qlab_acct input $proto dport $port jump c_${eng}_${proto}_${port}_in; nft add rule inet qlab_acct output $proto sport $port jump c_${eng}_${proto}_${port}_out" >/dev/null
+        ssh_run "$h" "nft add rule inet qlab_acct input $proto dport $port jump c_${eng}_${proto}_${port}_in; nft add rule inet qlab_acct output $proto sport $port jump c_${eng}_${proto}_${port}_out" >/dev/null </dev/null
       done < <(engine_carrier_rules)
     done
     # verify - a silently-lost setup makes every wire count read zero
