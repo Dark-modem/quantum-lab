@@ -20,7 +20,7 @@ for a in "$@"; do
   if [ "$seen_sep" = 1 ]; then process_names+=("$a"); else chains+=("$a"); fi
 done
 
-echo "TS $(date +%s%3N)"
+echo "TS $(date +%s%N | cut -c1-13)"
 
 for c in "${chains[@]:-}"; do
   [ -z "$c" ] && continue
@@ -33,8 +33,13 @@ done
 # /proc/net/dev: " iface: rxb rxp rxerr rxdrop ... txb txp ..."
 line="$(grep -E "^ *$IFACE:" /proc/net/dev || true)"
 if [ -n "$line" ]; then
-  vals=("${line#*:}")
-  echo "DEV $IFACE ${vals[0]} ${vals[1]} ${vals[8]} ${vals[9]}"
+  # unquoted expansion on purpose: split the 16 counters on IFS
+  vals=(${line#*:})
+  if [ "${#vals[@]}" -ge 10 ]; then
+    echo "DEV $IFACE ${vals[0]} ${vals[1]} ${vals[8]} ${vals[9]}"
+  else
+    echo "DEV $IFACE 0 0 0 0"
+  fi
 else
   echo "DEV $IFACE 0 0 0 0"
 fi

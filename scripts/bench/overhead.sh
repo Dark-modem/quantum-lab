@@ -157,12 +157,12 @@ start_http_server() {
   local bind port
   bind="$(engine_http_bind)"
   port="$(engine_http_port)"
-  ssh_run "$QL_GERMANY_HOST" "pkill -f qlab-httpd.py 2>/dev/null; sleep 0.3; nohup python3 /tmp/qlab-httpd.py $bind $port 8192 >/dev/null 2>&1 & echo started" >/dev/null
+  ssh_run "$QL_GERMANY_HOST" "pkill -f "[q]lab-httpd" 2>/dev/null; sleep 0.3; nohup python3 /tmp/qlab-httpd.py $bind $port 8192 >/dev/null 2>&1 & echo started" >/dev/null
   sleep 1
 }
 
 stop_http_server() {
-  ssh_run "$QL_GERMANY_HOST" "pkill -f qlab-httpd.py 2>/dev/null; echo stopped" >/dev/null
+  ssh_run "$QL_GERMANY_HOST" "pkill -f "[q]lab-httpd" 2>/dev/null; echo stopped" >/dev/null
 }
 
 # ---------------------------------------------------------------------------
