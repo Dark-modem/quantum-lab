@@ -134,7 +134,7 @@ measure_outage() {
   printf '%s\n' "$row" >>"$ROWS_FILE"
   log "[$name] detected=${detected}ms recovered=${recovered:-NA}ms"
   # always clean the lab state
-  ssh_run "$QL_IRAN_HOST" "nft delete table inet qlab_bh 2>/dev/null; tc qdisc del dev eth0 root 2>/dev/null; true" >/dev/null
+  ssh_run "$QL_IRAN_HOST" "tc qdisc del dev eth0 root 2>/dev/null; true" >/dev/null
   sleep 3
 }
 
@@ -189,9 +189,12 @@ print(f"{statistics.mean(v):.1f}ms mean, {max(v):.1f}ms max, n={len(v)}") if v e
 }
 
 t_blackhole() {
-  log "[blackhole] dropping mesh port on iran (both directions)"
-  ssh_run "$QL_IRAN_HOST" "nft delete table inet qlab_bh 2>/dev/null; nft add table inet qlab_bh; nft add chain inet qlab_bh pre '{ type filter hook prerouting priority -400; }'; nft add chain inet qlab_bh out '{ type filter hook output priority -400; }'; nft add rule inet qlab_bh pre udp dport $MESH_PORT drop; nft add rule inet qlab_bh pre tcp dport $MESH_PORT drop; nft add rule inet qlab_bh out udp sport $MESH_PORT drop; nft add rule inet qlab_bh out tcp sport $MESH_PORT drop; echo blackhole-on" >/dev/null
-  measure_outage "blackhole" "$QL_IRAN_HOST" "true" "$QL_IRAN_HOST" "nft delete table inet qlab_bh 2>/dev/null; echo blackhole-off" no
+  # tc netem loss 100% scoped to the mesh port (SSH port 22 unaffected).
+  # tc instead of nft: co-tenant workloads on the shared test servers wipe
+  # foreign nft tables; qdiscs have proven stable.
+  log "[blackhole] 100% loss on mesh port via tc netem on iran"
+  ssh_run "$QL_IRAN_HOST" "tc qdisc del dev eth0 root 2>/dev/null; tc qdisc add dev eth0 root handle 1: prio bands 3; tc qdisc add dev eth0 parent 1:3 handle 30: netem loss 100% limit 200; tc filter add dev eth0 parent 1: protocol ip u32 match ip sport $MESH_PORT 0xffff flowid 1:3; tc filter add dev eth0 parent 1: protocol ip u32 match ip dport $MESH_PORT 0xffff flowid 1:3; echo blackhole-on" >/dev/null
+  measure_outage "blackhole" "$QL_IRAN_HOST" "true" "$QL_IRAN_HOST" "tc qdisc del dev eth0 root 2>/dev/null; echo blackhole-off" no
 }
 
 # ---------------------------------------------------------------------------

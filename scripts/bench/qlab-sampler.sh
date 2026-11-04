@@ -25,9 +25,13 @@ echo "TS $(date +%s%N | cut -c1-13)"
 for c in "${chains[@]:-}"; do
   [ -z "$c" ] && continue
   line="$(nft list chain inet qlab_acct "$c" 2>/dev/null | grep -oE 'counter packets [0-9]+ bytes [0-9]+' | head -1)"
-  p="$(printf '%s' "$line" | awk '{print $3}')"
-  b="$(printf '%s' "$line" | awk '{print $5}')"
-  echo "NF $c ${p:-0} ${b:-0}"
+  if [ -z "$line" ]; then
+    echo "NF $c MISSING"
+  else
+    p="$(printf '%s' "$line" | awk '{print $3}')"
+    b="$(printf '%s' "$line" | awk '{print $5}')"
+    echo "NF $c ${p:-0} ${b:-0}"
+  fi
 done
 
 # /proc/net/dev: " iface: rxb rxp rxerr rxdrop ... txb txp ..."

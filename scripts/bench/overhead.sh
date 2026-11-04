@@ -201,7 +201,7 @@ import json, os, sys
 tag, eng, direction, workload, rep, cf, gf, rows = sys.argv[1:9]
 
 def parse_snapshot(text, start_marker=None):
-    out = {"TS": None, "NF": {}, "DEV": {}, "STAT": None, "PROC": {}, "LOAD": None}
+    out = {"TS": None, "NF": {}, "NF_MISSING": False, "DEV": {}, "STAT": None, "PROC": {}, "LOAD": None}
     started = start_marker is None
     for line in text.splitlines():
         if start_marker and line.startswith(start_marker):
@@ -213,7 +213,10 @@ def parse_snapshot(text, start_marker=None):
             if out["TS"] is None:
                 out["TS"] = int(f[1])
         elif f[0] == "NF":
-            out["NF"][f[1]] = (int(f[2]), int(f[3]))
+            if f[2] == "MISSING":
+                out["NF_MISSING"] = True
+            else:
+                out["NF"][f[1]] = (int(f[2]), int(f[3]))
         elif f[0] == "DEV":
             out["DEV"][f[1]] = tuple(int(x) for x in f[2:6])
         elif f[0] == "STAT":
@@ -249,7 +252,7 @@ iran_pre = parse_snapshot(pre_text, None)
 iran_post = parse_snapshot(post_text, marker)
 
 def empty_snap():
-    return {"TS": None, "NF": {}, "DEV": {}, "STAT": None, "PROC": {}, "LOAD": None}
+    return {"TS": None, "NF": {}, "NF_MISSING": False, "DEV": {}, "STAT": None, "PROC": {}, "LOAD": None}
 
 ger_pre = empty_snap()
 ger_post = empty_snap()
@@ -317,9 +320,12 @@ elif "HTTP_SUM" in ctext:
     duration = ((iran_post["TS"] or 0) - (iran_pre["TS"] or 0)) / 1000.0
     throughput = payload * 8 / duration if duration and duration > 0 else None
 
+snap_invalid = bool(iran_pre.get("NF_MISSING") or iran_post.get("NF_MISSING")
+                     or ger_pre.get("NF_MISSING") or ger_post.get("NF_MISSING"))
 row = {
     "tag": tag, "engine": eng, "direction": direction, "workload": workload, "rep": int(rep),
     "iperf_rc": iperf_rc,
+    "counters_valid": not snap_invalid,
     "payload_bytes": payload,
     "throughput_bps": throughput,
     "duration_s": duration,
@@ -422,6 +428,10 @@ except Exception: print(0)')"
           iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
           germany_sample_post "$eng" "$tag"
           crc="$(grep -m1 '^IPERF_RC' "$QLAB_OUT/cli-$tag.txt" | awk '{print $2}')"
+          if grep -q "MISSING" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" 2>/dev/null; then
+            log "WARN: $tag attempt $attempt hit an nft wipe (counters missing) - clean retry"
+            sleep 2; continue
+          fi
           if [ "$crc" = 0 ] && grep -q '"end"' "$QLAB_OUT/cli-$tag.txt"; then done_run=1; break; fi
           log "WARN: $tag attempt $attempt failed (rc=$crc) - clean retry (new delta window)"
           sleep 2
@@ -442,6 +452,10 @@ except Exception: print(0)')"
             iran_iperf_client "$eng" "$dst" "$IPERF_PORT" "$tag" "-t 10 $flip $udpargs -l $s" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
             germany_sample_post "$eng" "$tag"
             crc="$(grep -m1 '^IPERF_RC' "$QLAB_OUT/cli-$tag.txt" | awk '{print $2}')"
+            if grep -q "MISSING" "$QLAB_OUT/cli-$tag.txt" "$QLAB_OUT/ger-$tag.txt" 2>/dev/null; then
+              log "WARN: $tag attempt $attempt hit an nft wipe (counters missing) - clean retry"
+              sleep 2; continue
+            fi
             if [ "$crc" = 0 ] && grep -q '"end"' "$QLAB_OUT/cli-$tag.txt"; then done_run=1; break; fi
             log "WARN: $tag attempt $attempt failed (rc=$crc) - clean retry (new delta window)"
             sleep 2

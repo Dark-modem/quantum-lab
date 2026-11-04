@@ -87,7 +87,7 @@ def summarize(rows_):
 
 summary = {}
 for (eng, direction, workload), rs in sorted(groups.items()):
-    ok = [r for r in rs if r.get("payload_bytes")]
+    ok = [r for r in rs if r.get("payload_bytes") and r.get("counters_valid", True)]
     summary[f"{eng}|{direction}|{workload}"] = summarize(ok)
 
 # keep per-rep raw rows in the JSON for reproducibility
