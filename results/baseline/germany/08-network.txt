@@ -1,3 +1,51 @@
-[23:01:43] ssh tunnel-germany failed (rc=255, attempt 1/3); retrying in 8s
-[23:01:59] ssh tunnel-germany failed (rc=255, attempt 2/3); retrying in 8s
-[23:02:16] ssh tunnel-germany failed (rc=255, attempt 3/3); retrying in 8s
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             UP             91.107.179.252/32 metric 100 2a01:4f8:c010:6e81::1/64 fe80::9000:aff:fe48:31a6/64 
+l2tpeth0         UNKNOWN        172.31.99.2/24 fe80::185c:1dff:fe6f:1253/64 
+gre0@NONE        DOWN           
+gretap0@NONE     DOWN           
+erspan0@NONE     DOWN           
+---
+default via 172.31.1.1 dev eth0 proto dhcp src 91.107.179.252 metric 100 
+172.31.1.1 dev eth0 proto dhcp scope link src 91.107.179.252 metric 100 
+172.31.99.0/24 dev l2tpeth0 proto kernel scope link src 172.31.99.2 
+185.12.64.1 via 172.31.1.1 dev eth0 proto dhcp src 91.107.179.252 metric 100 
+185.12.64.2 via 172.31.1.1 dev eth0 proto dhcp src 91.107.179.252 metric 100 
+local 91.107.179.252 dev eth0 table local proto kernel scope host src 91.107.179.252 
+local 127.0.0.0/8 dev lo table local proto kernel scope host src 127.0.0.1 
+local 127.0.0.1 dev lo table local proto kernel scope host src 127.0.0.1 
+broadcast 127.255.255.255 dev lo table local proto kernel scope link src 127.0.0.1 
+local 172.31.99.2 dev l2tpeth0 table local proto kernel scope host src 172.31.99.2 
+broadcast 172.31.99.255 dev l2tpeth0 table local proto kernel scope link src 172.31.99.2 
+2a01:4f8:c010:6e81::/64 dev eth0 proto kernel metric 256 pref medium
+fe80::/64 dev eth0 proto kernel metric 256 pref medium
+fe80::/64 dev l2tpeth0 proto kernel metric 256 pref medium
+default via fe80::1 dev eth0 proto static metric 1024 onlink pref medium
+local ::1 dev lo table local proto kernel metric 0 pref medium
+anycast 2a01:4f8:c010:6e81:: dev eth0 table local proto kernel metric 0 pref medium
+local 2a01:4f8:c010:6e81::1 dev eth0 table local proto kernel metric 0 pref medium
+anycast fe80:: dev eth0 table local proto kernel metric 0 pref medium
+anycast fe80:: dev l2tpeth0 table local proto kernel metric 0 pref medium
+local fe80::185c:1dff:fe6f:1253 dev l2tpeth0 table local proto kernel metric 0 pref medium
+local fe80::9000:aff:fe48:31a6 dev eth0 table local proto kernel metric 0 pref medium
+multicast ff00::/8 dev eth0 table local proto kernel metric 256 pref medium
+multicast ff00::/8 dev l2tpeth0 table local proto kernel metric 256 pref medium
+---LINK---
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+eth0             UP             92:00:0a:48:31:a6 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+l2tpeth0         UNKNOWN        1a:5c:1d:6f:12:53 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+gre0@NONE        DOWN           0.0.0.0 <NOARP> 
+gretap0@NONE     DOWN           00:00:00:00:00:00 <BROADCAST,MULTICAST> 
+erspan0@NONE     DOWN           00:00:00:00:00:00 <BROADCAST,MULTICAST> 
+---QDISC---
+qdisc noqueue 0: dev lo root refcnt 2 
+qdisc fq_codel 0: dev eth0 root refcnt 2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+qdisc fq_codel 0: dev l2tpeth0 root refcnt 2 limit 10240p flows 1024 quantum 1460 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+---PROCNETDEV---
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo: 413145269  244606    0    0    0     0          0         0 413145269  244606    0    0    0     0       0          0
+  eth0: 2970856932 3518639    0    0    0     0          0         0 1979219976 3611974    0    0    0     0       0          0
+l2tpeth0: 23553265   70725    2    2    0     0          0         0 96433926   88153    0    0    0     0       0          0
+  gre0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+gretap0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+erspan0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0

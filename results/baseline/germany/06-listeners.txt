@@ -1,3 +1,10 @@
-[23:00:05] ssh tunnel-germany failed (rc=255, attempt 1/3); retrying in 8s
-[23:00:20] ssh tunnel-germany failed (rc=255, attempt 2/3); retrying in 8s
-[23:00:36] ssh tunnel-germany failed (rc=255, attempt 3/3); retrying in 8s
+Netid State  Recv-Q Send-Q       Local Address:Port Peer Address:PortProcess                                                   
+udp   UNCONN 0      0                127.0.0.1:323       0.0.0.0:*    users:(("chronyd",pid=332192,fd=4))                      
+udp   UNCONN 0      0               127.0.0.54:53        0.0.0.0:*    users:(("systemd-resolve",pid=480600,fd=19))             
+udp   UNCONN 0      0            127.0.0.53%lo:53        0.0.0.0:*    users:(("systemd-resolve",pid=480600,fd=17))             
+udp   UNCONN 0      0      91.107.179.252%eth0:68        0.0.0.0:*    users:(("systemd-network",pid=480625,fd=36))             
+udp   UNCONN 0      0                    [::1]:323          [::]:*    users:(("chronyd",pid=332192,fd=5))                      
+tcp   LISTEN 0      4096         127.0.0.53%lo:53        0.0.0.0:*    users:(("systemd-resolve",pid=480600,fd=18))             
+tcp   LISTEN 0      4096               0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=480606,fd=3),("systemd",pid=1,fd=252))
+tcp   LISTEN 0      4096            127.0.0.54:53        0.0.0.0:*    users:(("systemd-resolve",pid=480600,fd=20))             
+tcp   LISTEN 0      4096                  [::]:22           [::]:*    users:(("sshd",pid=480606,fd=4),("systemd",pid=1,fd=253))

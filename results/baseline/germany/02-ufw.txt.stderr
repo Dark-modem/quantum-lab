@@ -1,6 +1,2 @@
-mux_client_request_session: read from master failed: Connection reset by peer
-Failed to connect to new control master
-mux_client_request_session: read from master failed: Connection reset by peer
-Failed to connect to new control master
-mux_client_request_session: read from master failed: Connection reset by peer
-Failed to connect to new control master
+Connection to UNKNOWN port 65535 timed out
+[23:07:58] ssh qlab-germany failed (rc=255, attempt 1/3); retrying in 8s

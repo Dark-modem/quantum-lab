@@ -1,6 +1,0 @@
-mux_client_request_session: read from master failed: Connection reset by peer
-Failed to connect to new control master
-mm_send_fd: sendmsg(2): Broken pipe
-mux_client_request_session: send fds failed
-mux_client_request_session: read from master failed: Connection reset by peer
-Failed to connect to new control master

@@ -1,6 +1,0 @@
-mux_client_request_session: read from master failed: Software caused connection abort
-Failed to connect to new control master
-mux_client_request_session: read from master failed: Software caused connection abort
-Failed to connect to new control master
-mux_client_request_session: read from master failed: Connection reset by peer
-Failed to connect to new control master

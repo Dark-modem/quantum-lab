@@ -38,16 +38,28 @@ fail() { printf '[%s] FAIL: %s\n' "$(date +%H:%M:%S)" "$*" >&2; exit 1; }
 
 # The Iran host's international egress flaps; rapid fresh TCP+SSH handshakes
 # often die in banner exchange. Multiplex all sessions over one connection and
-# retry transient failures.
+# retry transient failures. Multiplexing over a ProxyJump double-hop, however,
+# turned out unstable in practice (mux master reset constantly), so hosts that
+# route through a jump host get plain retried connections instead.
 QL_CMUX_DIR="${TMPDIR:-/tmp}/qlab-cmux"
 mkdir -p "$QL_CMUX_DIR" 2>/dev/null
 SSH_MUX_OPTS=(-o ControlMaster=auto -o ControlPath="$QL_CMUX_DIR/cm-%r@%h:%p" -o ControlPersist=120 -o ServerAliveInterval=15 -o ServerAliveCountMax=4)
+SSH_PLAIN_OPTS=(-o ServerAliveInterval=15 -o ServerAliveCountMax=4)
+
+mux_opts_for() {
+  if ssh -G "$1" 2>/dev/null | grep -qi '^proxyjump '; then
+    printf '%s\n' "${SSH_PLAIN_OPTS[*]}"
+  else
+    printf '%s\n' "${SSH_MUX_OPTS[*]}"
+  fi
+}
 
 ssh_run() {
   local h="$1"; shift
-  local attempt out_rc
+  local attempt out_rc mopts
+  mopts="$(mux_opts_for "$h")"
   for attempt in 1 2 3; do
-    ssh -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new "${SSH_MUX_OPTS[@]}" "$h" "$@" && return 0
+    ssh -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new $mopts "$h" "$@" && return 0
     out_rc=$?
     log "ssh $h failed (rc=$out_rc, attempt $attempt/3); retrying in 8s"
     sleep 8
@@ -58,9 +70,10 @@ ssh_run() {
 # ssh_push <alias> <local-file> <remote-path>
 ssh_push() {
   local h="$1" src="$2" dst="$3"
-  local attempt
+  local attempt mopts
+  mopts="$(mux_opts_for "$h")"
   for attempt in 1 2 3; do
-    scp -q -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new "${SSH_MUX_OPTS[@]}" "$src" "$h:$dst" && return 0
+    scp -q -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=accept-new $mopts "$src" "$h:$dst" && return 0
     log "scp to $h failed (attempt $attempt/3); retrying in 8s"
     sleep 8
   done
@@ -70,7 +83,9 @@ ssh_push() {
 # ssh_push_stdin <alias> <remote-path> — pipe local stdin to a remote file.
 ssh_push_stdin() {
   local h="$1" dst="$2"
-  ssh -o BatchMode=yes -o ConnectTimeout=20 "${SSH_MUX_OPTS[@]}" "$h" "cat > '$dst'"
+  local mopts
+  mopts="$(mux_opts_for "$h")"
+  ssh -o BatchMode=yes -o ConnectTimeout=20 $mopts "$h" "cat > '$dst'"
 }
 
 # read_counter <host> <procfile-or-cmd> — trivial wrapper.
