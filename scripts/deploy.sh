@@ -28,26 +28,46 @@ CRED_FILE="$HOME/.qlab-panel-cred"   # outside any repo; deleted at end of phase
 # helpers
 # ---------------------------------------------------------------------------
 
-verify_linux_amd64() { # verify_linux_amd64 <local-binary>
-  python - "$1" <<'PYEOF'
+# The lab servers are mixed-arch: iran = x86_64, germany = aarch64 (Hetzner
+# ARM). Build per-arch; the phase-1C report documents this deviation from the
+# original "amd64 only" wording (which assumed both test servers were amd64).
+verify_elf_arch() { # verify_elf_arch <file> <goarch: amd64|arm64>
+  python - "$1" "$2" <<'PYCHECK'
 import sys
+machines = {"amd64": 0x3e, "arm64": 0xb7}
 b = open(sys.argv[1], 'rb').read(20)
 assert b[:4] == b'\x7fELF', 'not an ELF binary'
-assert b[18] == 0x3e, 'not x86-64 (e_machine=0x3e expected)'
-print('OK: ELF x86-64 static check passed')
-PYEOF
+assert b[18] == machines[sys.argv[2]], f'e_machine {b[18]:#x} != {sys.argv[2]}'
+print(f'OK: ELF {sys.argv[2]} check passed')
+PYCHECK
+}
+
+remote_goarch() { # remote_goarch <alias> -> amd64|arm64
+  local m
+  m="$(ssh_run "$1" "uname -m")"
+  case "$m" in
+    x86_64|amd64) echo amd64 ;;
+    aarch64|arm64) echo arm64 ;;
+    *) fail "unsupported remote arch: $m" ;;
+  esac
 }
 
 build_all() {
-  log "building quantum-agent (linux/amd64) from $AGENT_REPO"
+  log "building quantum-agent (linux/amd64 + linux/arm64) from $AGENT_REPO"
   (cd "$AGENT_REPO" && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
-    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-agent" ./cmd/quantum-agent)
-  log "building quantum-panel (linux/amd64) from $PANEL_REPO"
+    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-agent-amd64" ./cmd/quantum-agent)
+  (cd "$AGENT_REPO" && GOOS=linux GOARCH=arm64 CGO_ENABLED=0 \
+    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-agent-arm64" ./cmd/quantum-agent)
+  log "building quantum-panel (linux/amd64 + linux/arm64) from $PANEL_REPO"
   (cd "$PANEL_REPO" && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
-    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-panel" ./cmd/quantum-panel)
-  verify_linux_amd64 "$QLAB_OUT/quantum-agent"
-  verify_linux_amd64 "$QLAB_OUT/quantum-panel"
-  sha256sum "$QLAB_OUT/quantum-agent" "$QLAB_OUT/quantum-panel" | tee "$QLAB_OUT/sha256.txt"
+    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-panel-amd64" ./cmd/quantum-panel)
+  (cd "$PANEL_REPO" && GOOS=linux GOARCH=arm64 CGO_ENABLED=0 \
+    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-panel-arm64" ./cmd/quantum-panel)
+  verify_elf_arch "$QLAB_OUT/quantum-agent-amd64" amd64
+  verify_elf_arch "$QLAB_OUT/quantum-agent-arm64" arm64
+  verify_elf_arch "$QLAB_OUT/quantum-panel-amd64" amd64
+  verify_elf_arch "$QLAB_OUT/quantum-panel-arm64" arm64
+  sha256sum "$QLAB_OUT"/quantum-*-* | tee "$QLAB_OUT/sha256.txt"
 }
 
 ensure_deps() { # ensure_deps <alias>
@@ -57,11 +77,21 @@ ensure_deps() { # ensure_deps <alias>
 
 ship_binary() { # ship_binary <alias> <local-bin> <remote-path>
   local h="$1" src="$2" dst="$3"
+  local localsha
+  localsha="$(sha256sum "$src" | awk '{print $1}')"
+  local remotesha
+  remotesha="$(ssh_run "$h" "sha256sum '$dst' 2>/dev/null | awk '{print \$1}'")"
+  if [ "$remotesha" = "$localsha" ]; then
+    log "[$h] $(basename "$src") already identical on server — skipping transfer"
+    return 0
+  fi
   log "[$h] shipping $(basename "$src") -> $dst"
   # keep exactly one previous generation for --rollback
   ssh_run "$h" "if [ -f '$dst' ]; then cp -a '$dst' '$dst.prev'; fi"
   push_bigfile "$h" "$src" "$dst.new"
   ssh_run "$h" "mv '$dst.new' '$dst' && chmod 755 '$dst'"
+  remotesha="$(ssh_run "$h" "sha256sum '$dst' 2>/dev/null | awk '{print \$1}'")"
+  [ "$remotesha" = "$localsha" ] || fail "[$h] $dst sha256 mismatch after install"
 }
 
 install_unit() { # install_unit <alias> <unit-name> <exec-line> <description>
@@ -125,11 +155,14 @@ wait_panel_http() {
 
 do_deploy() {
   build_all
+  IRAN_ARCH="$(remote_goarch "$QL_IRAN_HOST")"
+  GERMANY_ARCH="$(remote_goarch "$QL_GERMANY_HOST")"
+  log "architectures: iran=$IRAN_ARCH germany=$GERMANY_ARCH"
   ensure_deps "$QL_IRAN_HOST"
   ensure_deps "$QL_GERMANY_HOST"
 
   # Panel: germany only.
-  ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-panel" "$PANEL_BIN_REMOTE"
+  ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-panel-$GERMANY_ARCH" "$PANEL_BIN_REMOTE"
   install_unit "$QL_GERMANY_HOST" "$PANEL_UNIT" "$PANEL_BIN_REMOTE" "Quantum Panel (management only)"
 
   if ! ssh_run "$QL_GERMANY_HOST" "test -f /etc/gre-panel/panel.json && grep -q pass_hash /etc/gre-panel/panel.json"; then
@@ -140,12 +173,13 @@ do_deploy() {
   ssh_run "$QL_GERMANY_HOST" "systemctl enable --now $PANEL_UNIT 2>/dev/null || systemctl restart $PANEL_UNIT"
   wait_panel_http
 
-  # Agent: both servers.
-  for h in "$QL_IRAN_HOST" "$QL_GERMANY_HOST"; do
-    ship_binary "$h" "$QLAB_OUT/quantum-agent" "$AGENT_BIN_REMOTE"
-    install_unit "$h" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
-    ssh_run "$h" "systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
-  done
+  # Agent: both servers, per-host architecture.
+  ship_binary "$QL_IRAN_HOST" "$QLAB_OUT/quantum-agent-$IRAN_ARCH" "$AGENT_BIN_REMOTE"
+  install_unit "$QL_IRAN_HOST" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
+  ssh_run "$QL_IRAN_HOST" "systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
+  ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-agent-$GERMANY_ARCH" "$AGENT_BIN_REMOTE"
+  install_unit "$QL_GERMANY_HOST" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
+  ssh_run "$QL_GERMANY_HOST" "systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
 
   log "deploy complete:"
   log "  panel : $QL_GERMANY_HOST ($PANEL_UNIT)"
