@@ -19,7 +19,11 @@
 set -uo pipefail
 . "$(dirname "$0")/lib.sh"
 
-STEPS=("${@:-panel-login enroll heartbeat desired-state panel-death}")
+if [ $# -eq 0 ]; then
+  STEPS=(panel-login enroll heartbeat desired-state panel-death)
+else
+  STEPS=("$@")
+fi
 RESULT_MD="$QLAB_RESULTS/smoke-$QLAB_TS.md"
 RESULT_JSON="$QLAB_RESULTS/smoke-$QLAB_TS.json"
 mkdir -p "$QLAB_RESULTS"
@@ -84,17 +88,38 @@ step_panel_login() {
 step_enroll() {
   log "step: enroll"
   panel_login
-  # mint one token per role
+  # idempotent: skip enrollment when the agent already holds an identity and
+  # the panel shows an online record with the right name and public IP
   for role in iran foreign; do
+    local h="$QL_IRAN_HOST" name="lab-iran"
+    [ "$role" = foreign ] && h="$QL_GERMANY_HOST" && name="lab-germany"
+    local have_id
+    have_id="$(remote_agent_id "$h")"
+    if [ -n "$have_id" ]; then
+      local online_ip
+      online_ip="$(printf '%s' "$(panel_api GET 'api/agents'; echo "$PA_OUT")" | python -c '
+import json,sys
+d=json.load(sys.stdin)
+for a in d.get("agents",[]):
+    if a.get("id")==sys.argv[1] and a.get("status")=="online":
+        print(a.get("public_ip") or "?")
+        break
+else:
+    print("")' "$have_id" 2>/dev/null)"
+      if [ -n "$online_ip" ]; then
+        check "enroll-$role" 1 "already enrolled+online ($have_id, ip=$online_ip)"
+        continue
+      fi
+    fi
     panel_api POST "api/agents/tokens" "{\"role\":\"$role\",\"label\":\"phase1c-lab\",\"expires_days\":1}"
     local tok
     tok="$(printf '%s' "$PA_OUT" | python -c 'import json,sys; print(json.load(sys.stdin).get("token",""))' 2>/dev/null)"
     if [ -z "$tok" ]; then check "mint-token-$role" 0 "response=$PA_OUT"; return; fi
     log "[$role] enroll token minted (${#tok} chars)"
-    local h="$QL_IRAN_HOST" name="lab-iran"
-    [ "$role" = foreign ] && h="$QL_GERMANY_HOST" && name="lab-germany"
+    # Both agents enroll through the panel's PUBLIC address: the panel records
+    # the remote address as the agent's public_ip and uses it as the mesh hub
+    # transport address — a localhost enrollment would poison that.
     local url="http://$(germany_public_ip):$PANEL_PORT/$(panel_base)"
-    [ "$role" = foreign ] && url="http://127.0.0.1:$PANEL_PORT/$(panel_base)"
     if ssh_run "$h" "$AGENT_BIN_REMOTE enroll --server '$url' --token '$tok' --name '$name'"; then
       check "enroll-$role" 1 "$h"
     else
@@ -107,26 +132,29 @@ step_enroll() {
 step_heartbeat() {
   log "step: heartbeat"
   panel_login
-  local deadline=$(( $(date +%s) + 120 )) found=""
+  local deadline=$(( $(date +%s) + 120 )) online_count=0 found=""
   while [ "$(date +%s)" -lt "$deadline" ]; do
     panel_api GET "api/agents"
     found="$(printf '%s' "$PA_OUT" | python -c '
 import json,sys
-try: d=json.load(sys.stdin)
-except Exception: raise SystemExit
-agents=d if isinstance(d,list) else d.get("agents",[])
+try:
+    d=json.load(sys.stdin)
+except Exception:
+    raise SystemExit
+agents=d.get("agents",[]) if isinstance(d,dict) else d
 for a in agents:
-    print(a.get("id",""),a.get("name",""),a.get("status",""),a.get("connected",""),a.get("last_seen",a.get("last_heartbeat","")))
+    print(a.get("id",""),a.get("name",""),a.get("status",""),a.get("last_seen",""))
 ' 2>/dev/null)"
-    local n; n="$(printf '%s\n' "$found" | grep -c . || true)"
-    if [ "$n" -ge 2 ]; then
-      check "agents-visible" 1 "count=$n"
+    online_count="$(printf '%s
+' "$found" | grep -c " online " || true)"
+    if [ "$online_count" -ge 2 ]; then
+      check "agents-online" 1 "count=$online_count"
       log "agents: $found"
       return 0
     fi
     sleep 5
   done
-  check "agents-visible" 0 "count=$n (last=$found)"
+  check "agents-online" 0 "online=$online_count (last=$found)"
 }
 
 step_desired_state() {
@@ -136,12 +164,16 @@ step_desired_state() {
   local hub_id node_id
   hub_id="$(printf '%s' "$PA_OUT" | python -c '
 import json,sys
-d=json.load(sys.stdin); agents=d if isinstance(d,list) else d.get("agents",[])
-print([a["id"] for a in agents if "germany" in a.get("name","")][0])' 2>/dev/null)"
+d=json.load(sys.stdin); agents=d.get("agents",[]) if isinstance(d,dict) else d
+cand=[a for a in agents if "germany" in (a.get("name") or "")]
+cand.sort(key=lambda a: 0 if a.get("status")=="online" else 1)
+print(cand[0]["id"] if cand else "")' 2>/dev/null)"
   node_id="$(printf '%s' "$PA_OUT" | python -c '
 import json,sys
-d=json.load(sys.stdin); agents=d if isinstance(d,list) else d.get("agents",[])
-print([a["id"] for a in agents if "iran" in a.get("name","")][0])' 2>/dev/null)"
+d=json.load(sys.stdin); agents=d.get("agents",[]) if isinstance(d,dict) else d
+cand=[a for a in agents if "iran" in (a.get("name") or "")]
+cand.sort(key=lambda a: 0 if a.get("status")=="online" else 1)
+print(cand[0]["id"] if cand else "")' 2>/dev/null)"
   if [ -z "$hub_id" ] || [ -z "$node_id" ]; then
     check "resolve-agent-ids" 0 "hub=$hub_id node=$node_id"; return
   fi
@@ -154,7 +186,19 @@ print([a["id"] for a in agents if "iran" in a.get("name","")][0])' 2>/dev/null)"
 import json,sys
 d=json.load(sys.stdin)
 t=d.get("tunnels",d if isinstance(d,list) else [])
-print([x["id"] for x in t if x.get("name")=="lab-matrix"][0])' 2>/dev/null || true)"
+ok=[x["id"] for x in t if x.get("name")=="lab-matrix" and x.get("state")=="active"]
+print(ok[0] if ok else "")' 2>/dev/null || true)"
+  # an errored lab-matrix tunnel from a previous run gets deleted first
+  local stale
+  stale="$(printf '%s' "$PA_OUT" | python -c '
+import json,sys
+d=json.load(sys.stdin)
+t=d.get("tunnels",d if isinstance(d,list) else [])
+print(" ".join(x["id"] for x in t if x.get("name")=="lab-matrix" and x.get("state")=="error"))' 2>/dev/null || true)"
+  for sid in $stale; do
+    log "deleting stale errored tunnel $sid"
+    panel_api DELETE "api/agent-tunnels/$sid"
+  done
   local tid="$existing"
   if [ -z "$tid" ]; then
     panel_api POST "api/agent-tunnels" "{\"name\":\"lab-matrix\",\"hub_agent_id\":\"$hub_id\",\"node_agent_id\":\"$node_id\",\"family\":\"ipv4\",\"port\":$MESH_PORT,\"ports\":[$IPERF_PORT]}"
@@ -175,11 +219,23 @@ import json,sys
 d=json.load(sys.stdin)
 t=d.get("tunnels",d if isinstance(d,list) else [])
 print([x.get("state","?") for x in t if x.get("id")=="'"$tid"'"][0])' 2>/dev/null)"
-    [ "$state" = "active" ] && break
+    read -r state acks <<<"$(printf '%s' "$PA_OUT" | python -c '
+import json,sys
+d=json.load(sys.stdin)
+t=d.get("tunnels",d if isinstance(d,list) else [])
+for x in t:
+    if x.get("id")=="'"$tid"'":
+        hub=x.get("hub",{}); node=x.get("node",{})
+        print(x.get("state","?"), int(bool(hub.get("ack_ok")))+int(bool(node.get("ack_ok"))))
+        break
+else:
+    print("?",0)' 2>/dev/null)"
+    [ "$state" = "active" ] && [ "$acks" = "2" ] && break
     [ "$state" = "error" ] && break
     sleep 6
   done
-  check "tunnel-active" "$([ "$state" = active ] && echo 1 || echo 0)" "id=$tid state=$state"
+  local t_ok="$([ "$state" = active ] && [ "$acks" = 2 ] && echo 1 || echo 0)"
+  check "tunnel-active-both-acked" "$t_ok" "id=$tid state=$state acks=$acks/2"
 
   # mesh verification: qmx iface + mesh IP ping + unit active
   local if_iran if_ger ping_iran ping_ger unit_iran unit_ger

@@ -144,6 +144,12 @@ germany_public_ip() {
   ssh -G "$QL_GERMANY_HOST" 2>/dev/null | awk '/^hostname /{print $2}' | head -1
 }
 
+
+# remote_agent_id <alias> — the enrolled agent ID on a lab server ("" if none).
+remote_agent_id() {
+  ssh_run "$1" 'test -f /etc/quantum-agent/agent.json && grep -o "\"id\"[: ]*\"[^\"]*\"" /etc/quantum-agent/agent.json | head -1 | cut -d\" -f4'
+}
+
 require_bin() {
   command -v "$1" >/dev/null 2>&1 || fail "required local binary not found: $1"
 }
