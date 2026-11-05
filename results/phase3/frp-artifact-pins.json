@@ -1,7 +1,16 @@
 {
-  "version": "0.61.1",
-  "artifact_template": "frp-0.61.1-linux-{arch}.tar.gz",
-  "engine_artifact_pub_key_b64": "9oFos9Kay7J7BR/bzkt8dVGq+iQyKIYZjQxMw4mLvD4=",
-  "amd64": {"file": "frp-0.61.1-linux-amd64.tar.gz", "sha256": "bff260b68ca7b1461182a46c4f34e9709ba32764eed30a15dd94ac97f50a2c40", "signature": "pxgT59M7JKd7qy7RMaF9N+FjdGjc5DSzaPBLuSIGVWaYLwnb/B3OlD7pUuBpMj4M/vvoyLoG3nQGuKc+UFzXDA=="},
-  "arm64": {"file": "frp-0.61.1-linux-arm64.tar.gz", "sha256": "af6366f2b43920ebfe6235dba6060770399ed1fb18601e5818552bd46a7621f8", "signature": "v1ZdCkMxQSkhBfpoAkkLYM9d4pgMEqhBtERS0Aq53oSlTSh43UaKoBjcA+B6GRvrkfhOgqFt6L+AKMakSIqwCw=="}
+ "version": "0.61.1",
+ "artifact_template": "frp-0.61.1-linux-{arch}.tar.gz",
+ "engine_artifact_pub_key_b64": "MCowBQYDK2VwAyEA9oFos9Kay7J7BR/bzkt8dVGq+iQyKIYZjQxMw4mLvD4=",
+ "amd64": {
+  "file": "frp-0.61.1-linux-amd64.tar.gz",
+  "sha256": "bff260b68ca7b1461182a46c4f34e9709ba32764eed30a15dd94ac97f50a2c40",
+  "signature": "pxgT59M7JKd7qy7RMaF9N+FjdGjc5DSzaPBLuSIGVWaYLwnb/B3OlD7pUuBpMj4M/vvoyLoG3nQGuKc+UFzXDA=="
+ },
+ "arm64": {
+  "file": "frp-0.61.1-linux-arm64.tar.gz",
+  "sha256": "af6366f2b43920ebfe6235dba6060770399ed1fb18601e5818552bd46a7621f8",
+  "signature": "v1ZdCkMxQSkhBfpoAkkLYM9d4pgMEqhBtERS0Aq53oSlTSh43UaKoBjcA+B6GRvrkfhOgqFt6L+AKMakSIqwCw=="
+ },
+ "note": "pub key is base64 DER SPKI (raw encoding was invalid for the pinned-key parser)"
 }

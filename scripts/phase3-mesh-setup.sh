@@ -41,7 +41,8 @@ dc_ger="$(panel_api POST "mesh/datacenters" '{"name":"lab-germany","kind":"forei
 log "dc iran=$dc_iran germany=$dc_ger"
 
 log "creating servers"
-srv_iran="$(panel_api POST "mesh/servers" "{\"name\":\"lab-iran\",\"role\":\"iran\",\"datacenter_id\":$dc_iran,\"address\":\"$(ssh_run "$QL_IRAN_HOST" "curl -s --max-time 5 ifconfig.me 2>/dev/null || echo 185.226.119.74")\"}" | python -c 'import json,sys; print(json.load(sys.stdin).get("id",""))' 2>/dev/null)"
+srv_iran="$(panel_api POST "mesh/servers" "{\"name\":\"lab-iran\",\"role\":\"iran\",\"datacenter_id\":$dc_iran,\"address\":\"185.226.119.74\"}" | tee /tmp/qlab-srv1.json | python -c 'import json,sys; print(json.load(sys.stdin).get("id",""))' 2>/dev/null)"
+[ -n "$srv_iran" ] || log "server1 response: $(head -c 300 /tmp/qlab-srv1.json 2>/dev/null)"
 srv_ger="$(panel_api POST "mesh/servers" "{\"name\":\"lab-germany\",\"role\":\"foreign\",\"datacenter_id\":$dc_ger,\"address\":\"$(germany_public_ip)\"}" | python -c 'import json,sys; print(json.load(sys.stdin).get("id",""))' 2>/dev/null)"
 [ -n "$srv_iran" ] && [ -n "$srv_ger" ] || { log "server create failed"; exit 1; }
 log "servers iran=$srv_iran germany=$srv_ger"

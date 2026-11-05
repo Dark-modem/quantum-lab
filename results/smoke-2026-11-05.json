@@ -1,1 +1,1 @@
-{"date":"2026-11-05","pass":2,"fails":0,"checks":["{\"verdict\": \"PASS\", \"name\": \"\", \"detail\": \"panel-login http=200 csrf=present\"},{\"verdict\": \"PASS\", \"name\": \"\", \"detail\": \"agents-online count=2\"}"]}
+{"date":"2026-11-05","pass":1,"fails":0,"checks":["{\"verdict\": \"PASS\", \"name\": \"\", \"detail\": \"panel-login http=200 csrf=present\"}"]}
