@@ -361,6 +361,10 @@ main() {
   log "engines to measure: ${ENGINES[*]}"
   push_helpers
   nft_setup_all
+  if [ "${QL_SETUP_ONLY:-0}" = 1 ]; then
+    log "setup-only mode: accounting table verified, exiting"
+    return 0
+  fi
 
   log "checking engine readiness"
   declare -A READY
@@ -412,7 +416,8 @@ except Exception: print(0)')"
     start_http_server "$eng"
     local http_port; http_port="$(source_adapter "$eng"; engine_http_port)"
 
-    for dir in up down; do
+    local run_dirs="${QL_DIRS:-up down}"
+    for dir in $run_dirs; do
       local flip=""; [ "$dir" = down ] && flip="-R"
       local rate="${UDP_RATE_BPS[${eng}_${dir}]:-0}"
       [ "${rate:-0}" -lt 1000000 ] 2>/dev/null && rate="$UDP_RATE_FALLBACK_BPS"
