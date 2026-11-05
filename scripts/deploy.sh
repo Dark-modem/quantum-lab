@@ -88,6 +88,7 @@ ship_binary() { # ship_binary <alias> <local-bin> <remote-path>
   remotesha="$(ssh_run "$h" "sha256sum '$dst' 2>/dev/null | awk '{print \$1}'")"
   if [ "$remotesha" = "$localsha" ]; then
     log "[$h] $(basename "$src") already identical on server — skipping transfer"
+    echo SKIPPED
     return 0
   fi
   log "[$h] shipping $(basename "$src") -> $dst"
@@ -97,6 +98,7 @@ ship_binary() { # ship_binary <alias> <local-bin> <remote-path>
   ssh_run "$h" "mv '$dst.new' '$dst' && chmod 755 '$dst'"
   remotesha="$(ssh_run "$h" "sha256sum '$dst' 2>/dev/null | awk '{print \$1}'")"
   [ "$remotesha" = "$localsha" ] || fail "[$h] $dst sha256 mismatch after install"
+  echo SHIPPED
 }
 
 install_unit() { # install_unit <alias> <unit-name> <exec-line> <description>
@@ -167,10 +169,11 @@ do_deploy() {
   ensure_deps "$QL_GERMANY_HOST"
 
   # Panel: germany only (QL_SKIP_PANEL=1 leaves the running panel alone).
+  local panel_shipped=SKIPPED
   if [ "${QL_SKIP_PANEL:-0}" = 1 ]; then
     log "QL_SKIP_PANEL=1 — keeping the running panel binary"
   else
-  ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-panel-$GERMANY_ARCH" "$PANEL_BIN_REMOTE"
+  panel_shipped="$(ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-panel-$GERMANY_ARCH" "$PANEL_BIN_REMOTE" | tail -1)"
   install_unit "$QL_GERMANY_HOST" "$PANEL_UNIT" "$PANEL_BIN_REMOTE" "Quantum Panel (management only)"
   fi
 
@@ -179,16 +182,17 @@ do_deploy() {
   else
     log "[germany] panel.json exists — keeping existing credentials (idempotent)"
   fi
-  ssh_run "$QL_GERMANY_HOST" "systemctl enable --now $PANEL_UNIT 2>/dev/null || systemctl restart $PANEL_UNIT"
+  ssh_run "$QL_GERMANY_HOST" "systemctl enable $PANEL_UNIT 2>/dev/null; systemctl restart $PANEL_UNIT"
   wait_panel_http
 
   # Agent: both servers, per-host architecture.
-  ship_binary "$QL_IRAN_HOST" "$QLAB_OUT/quantum-agent-$IRAN_ARCH" "$AGENT_BIN_REMOTE"
+  local iran_shipped ger_shipped
+  iran_shipped="$(ship_binary "$QL_IRAN_HOST" "$QLAB_OUT/quantum-agent-$IRAN_ARCH" "$AGENT_BIN_REMOTE" | tail -1)"
   install_unit "$QL_IRAN_HOST" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
-  ssh_run "$QL_IRAN_HOST" "systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
-  ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-agent-$GERMANY_ARCH" "$AGENT_BIN_REMOTE"
+  ssh_run "$QL_IRAN_HOST" "systemctl enable $AGENT_UNIT 2>/dev/null; systemctl restart $AGENT_UNIT"
+  ger_shipped="$(ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-agent-$GERMANY_ARCH" "$AGENT_BIN_REMOTE" | tail -1)"
   install_unit "$QL_GERMANY_HOST" "$AGENT_UNIT" "$AGENT_BIN_REMOTE run" "Quantum Agent"
-  ssh_run "$QL_GERMANY_HOST" "systemctl enable --now $AGENT_UNIT 2>/dev/null || systemctl restart $AGENT_UNIT"
+  ssh_run "$QL_GERMANY_HOST" "systemctl enable $AGENT_UNIT 2>/dev/null; systemctl restart $AGENT_UNIT"
 
   log "deploy complete:"
   log "  panel : $QL_GERMANY_HOST ($PANEL_UNIT)"
