@@ -418,6 +418,7 @@ except Exception: print(0)')"
       [ "${rate:-0}" -lt 1000000 ] 2>/dev/null && rate="$UDP_RATE_FALLBACK_BPS"
       local udpargs="-u -b $rate"
 
+      [ "${BENCH_ONLY_HTTP:-0}" = 1 ] && continue
       for rep in 1 2 3; do
         local tag="${eng}_${dir}_tcp_bulk_r$rep"
         local attempt done_run=0 crc
@@ -441,6 +442,7 @@ except Exception: print(0)')"
         sleep 1
       done
 
+      [ "${BENCH_ONLY_HTTP:-0}" = 1 ] && continue
       for s in $UDP_SIZES; do
         for rep in 1 2 3; do
           local tag="${eng}_${dir}_udp_s${s}_r$rep"
@@ -470,6 +472,10 @@ except Exception: print(0)')"
         local tag="${eng}_${dir}_http_r$rep"
         local attempt done_run=0 hsum
         for attempt in 1 2 3; do
+          # fresh httpd per attempt (it died mid-pass once on the shared host)
+          source_adapter "$eng"
+          local hbind; hbind="$(engine_http_bind)"
+          ssh_run "$QL_GERMANY_HOST" "pkill -f '[q]lab-httpd' 2>/dev/null; sleep 0.3; nohup python3 /tmp/qlab-httpd.py $hbind $http_port 8192 >/dev/null 2>&1 & sleep 1; ss -tln | grep -q ':$http_port ' && echo HTTPD-UP || echo HTTPD-DOWN" | tail -1 | grep -q HTTPD-UP || { log "WARN: httpd not up for $tag"; sleep 2; continue; }
           germany_sample_pre "$eng" "$tag"
           iran_http_client "$eng" "$dst" "$http_port" "$tag" >"$QLAB_OUT/cli-$tag.txt" 2>/dev/null
           germany_sample_post "$eng" "$tag"
