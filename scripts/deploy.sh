@@ -53,11 +53,16 @@ remote_goarch() { # remote_goarch <alias> -> amd64|arm64
 }
 
 build_all() {
+  local engkey=""
+  if [ -n "$QL_ENGINE_PUB_B64" ]; then
+    engkey="-X github.com/Dark-modem/quantum-agent/internal/agent.engineArtifactPubKeyB64=$QL_ENGINE_PUB_B64"
+    log "pinning engine-artifact signing key into agent builds"
+  fi
   log "building quantum-agent (linux/amd64 + linux/arm64) from $AGENT_REPO"
   (cd "$AGENT_REPO" && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
-    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-agent-amd64" ./cmd/quantum-agent)
+    go build -trimpath -ldflags "-s -w $engkey" -o "$QLAB_OUT/quantum-agent-amd64" ./cmd/quantum-agent)
   (cd "$AGENT_REPO" && GOOS=linux GOARCH=arm64 CGO_ENABLED=0 \
-    go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-agent-arm64" ./cmd/quantum-agent)
+    go build -trimpath -ldflags "-s -w $engkey" -o "$QLAB_OUT/quantum-agent-arm64" ./cmd/quantum-agent)
   log "building quantum-panel (linux/amd64 + linux/arm64) from $PANEL_REPO"
   (cd "$PANEL_REPO" && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 \
     go build -trimpath -ldflags "-s -w" -o "$QLAB_OUT/quantum-panel-amd64" ./cmd/quantum-panel)
@@ -161,9 +166,13 @@ do_deploy() {
   ensure_deps "$QL_IRAN_HOST"
   ensure_deps "$QL_GERMANY_HOST"
 
-  # Panel: germany only.
+  # Panel: germany only (QL_SKIP_PANEL=1 leaves the running panel alone).
+  if [ "${QL_SKIP_PANEL:-0}" = 1 ]; then
+    log "QL_SKIP_PANEL=1 — keeping the running panel binary"
+  else
   ship_binary "$QL_GERMANY_HOST" "$QLAB_OUT/quantum-panel-$GERMANY_ARCH" "$PANEL_BIN_REMOTE"
   install_unit "$QL_GERMANY_HOST" "$PANEL_UNIT" "$PANEL_BIN_REMOTE" "Quantum Panel (management only)"
+  fi
 
   if ! ssh_run "$QL_GERMANY_HOST" "test -f /etc/gre-panel/panel.json && grep -q pass_hash /etc/gre-panel/panel.json"; then
     panel_init_credentials
