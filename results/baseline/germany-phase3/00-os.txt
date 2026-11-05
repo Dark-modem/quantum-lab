@@ -1,0 +1,33 @@
+PRETTY_NAME="Ubuntu 26.04.1 LTS"
+NAME="Ubuntu"
+VERSION_ID="26.04"
+VERSION="26.04.1 LTS (Resolute Raccoon)"
+VERSION_CODENAME=resolute
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=resolute
+LOGO=ubuntu-logo
+Linux ubuntu-4gb-fsn1-3-test 7.0.0-30-generic #30-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 18:09:26 UTC 2026 aarch64 GNU/Linux
+ 17:32:38 up 10 days,  7:31,  1 user,  load average: 0.42, 0.57, 0.52
+ Static hostname: ubuntu-4gb-fsn1-3-test
+       Icon name: computer-vm
+         Chassis: vm 🖴
+      Machine ID: c8ba239c40c34a6399a6f350e5a35f60
+         Boot ID: 81dfc2c28b7044a7b7c4f8e4450034c7
+    Product UUID: c8ba239c-40c3-4a63-99a6-f350e5a35f60
+  Virtualization: kvm
+Operating System: Ubuntu 26.04.1 LTS
+          Kernel: Linux 7.0.0-30-generic
+    Architecture: arm64
+ Hardware Vendor: Hetzner
+  Hardware Model: vServer
+ Hardware Serial: 172503462
+    Hardware SKU: TM
+Hardware Version: 20171111
+Firmware Version: 20171111
+   Firmware Date: Sat 2017-11-11
+    Firmware Age: 8y 11month 3w 3d

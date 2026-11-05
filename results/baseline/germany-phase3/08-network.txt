@@ -1,0 +1,102 @@
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             UP             91.107.179.252/32 metric 100 2a01:4f8:c010:6e81::1/64 fe80::9000:aff:fe48:31a6/64 
+l2tpeth0         UNKNOWN        172.31.99.2/24 fe80::185c:1dff:fe6f:1253/64 
+gre0@NONE        DOWN           
+gretap0@NONE     DOWN           
+erspan0@NONE     DOWN           
+ip6tnl0@NONE     DOWN           
+ip6gre0@NONE     DOWN           
+tunl0@NONE       DOWN           
+sit0@NONE        DOWN           
+ct-kh-24001-r    UP             172.31.1.2 peer 172.31.1.1/32 fe80::236:bae7:f6e:3d6b/64 
+ct-kh-24001@NONE UNKNOWN        10.77.1.2 peer 10.77.1.1/32 fe80::945b:68ff:fe21:63cd/64 
+docker0          DOWN           172.17.0.1/16 
+qmx0             UNKNOWN        10.254.231.1/30 fe80::166a:3e9a:df19:228/64 
+---
+default via 172.31.1.1 dev eth0 proto dhcp src 91.107.179.252 metric 100 
+10.77.1.1 dev ct-kh-24001 proto kernel scope link src 10.77.1.2 
+10.254.231.0/30 dev qmx0 proto kernel scope link src 10.254.231.1 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.31.1.1 dev ct-kh-24001-r proto kernel scope link src 172.31.1.2 
+172.31.1.1 dev eth0 proto dhcp scope link src 91.107.179.252 metric 100 
+172.31.99.0/24 dev l2tpeth0 proto kernel scope link src 172.31.99.2 
+185.12.64.1 via 172.31.1.1 dev eth0 proto dhcp src 91.107.179.252 metric 100 
+185.12.64.2 via 172.31.1.1 dev eth0 proto dhcp src 91.107.179.252 metric 100 
+local 10.77.1.2 dev ct-kh-24001 table local proto kernel scope host src 10.77.1.2 
+local 10.254.231.1 dev qmx0 table local proto kernel scope host src 10.254.231.1 
+broadcast 10.254.231.3 dev qmx0 table local proto kernel scope link src 10.254.231.1 
+local 91.107.179.252 dev eth0 table local proto kernel scope host src 91.107.179.252 
+local 127.0.0.0/8 dev lo table local proto kernel scope host src 127.0.0.1 
+local 127.0.0.1 dev lo table local proto kernel scope host src 127.0.0.1 
+broadcast 127.255.255.255 dev lo table local proto kernel scope link src 127.0.0.1 
+local 172.17.0.1 dev docker0 table local proto kernel scope host src 172.17.0.1 
+broadcast 172.17.255.255 dev docker0 table local proto kernel scope link src 172.17.0.1 linkdown 
+local 172.31.1.2 dev ct-kh-24001-r table local proto kernel scope host src 172.31.1.2 
+local 172.31.99.2 dev l2tpeth0 table local proto kernel scope host src 172.31.99.2 
+broadcast 172.31.99.255 dev l2tpeth0 table local proto kernel scope link src 172.31.99.2 
+2a01:4f8:c010:6e81::/64 dev eth0 proto kernel metric 256 pref medium
+fe80::/64 dev eth0 proto kernel metric 256 pref medium
+fe80::/64 dev l2tpeth0 proto kernel metric 256 pref medium
+fe80::/64 dev ct-kh-24001 proto kernel metric 256 pref medium
+fe80::/64 dev ct-kh-24001-r proto kernel metric 256 pref medium
+fe80::/64 dev qmx0 proto kernel metric 256 pref medium
+default via fe80::1 dev eth0 proto static metric 1024 onlink pref medium
+local ::1 dev lo table local proto kernel metric 0 pref medium
+anycast 2a01:4f8:c010:6e81:: dev eth0 table local proto kernel metric 0 pref medium
+local 2a01:4f8:c010:6e81::1 dev eth0 table local proto kernel metric 0 pref medium
+anycast fe80:: dev eth0 table local proto kernel metric 0 pref medium
+anycast fe80:: dev l2tpeth0 table local proto kernel metric 0 pref medium
+anycast fe80:: dev ct-kh-24001-r table local proto kernel metric 0 pref medium
+anycast fe80:: dev ct-kh-24001 table local proto kernel metric 0 pref medium
+anycast fe80:: dev qmx0 table local proto kernel metric 0 pref medium
+local fe80::236:bae7:f6e:3d6b dev ct-kh-24001-r table local proto kernel metric 0 pref medium
+local fe80::166a:3e9a:df19:228 dev qmx0 table local proto kernel metric 0 pref medium
+local fe80::185c:1dff:fe6f:1253 dev l2tpeth0 table local proto kernel metric 0 pref medium
+local fe80::9000:aff:fe48:31a6 dev eth0 table local proto kernel metric 0 pref medium
+local fe80::945b:68ff:fe21:63cd dev ct-kh-24001 table local proto kernel metric 0 pref medium
+multicast ff00::/8 dev eth0 table local proto kernel metric 256 pref medium
+multicast ff00::/8 dev l2tpeth0 table local proto kernel metric 256 pref medium
+multicast ff00::/8 dev ct-kh-24001 table local proto kernel metric 256 pref medium
+multicast ff00::/8 dev ct-kh-24001-r table local proto kernel metric 256 pref medium
+multicast ff00::/8 dev qmx0 table local proto kernel metric 256 pref medium
+---LINK---
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+eth0             UP             92:00:0a:48:31:a6 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+l2tpeth0         UNKNOWN        1a:5c:1d:6f:12:53 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+gre0@NONE        DOWN           0.0.0.0 <NOARP> 
+gretap0@NONE     DOWN           00:00:00:00:00:00 <BROADCAST,MULTICAST> 
+erspan0@NONE     DOWN           00:00:00:00:00:00 <BROADCAST,MULTICAST> 
+ip6tnl0@NONE     DOWN           :: <NOARP> 
+ip6gre0@NONE     DOWN           :: <NOARP> 
+tunl0@NONE       DOWN           0.0.0.0 <NOARP> 
+sit0@NONE        DOWN           0.0.0.0 <NOARP> 
+ct-kh-24001-r    UP             <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> 
+ct-kh-24001@NONE UNKNOWN        96:5b:68:21:63:cd <BROADCAST,MULTICAST,UP,LOWER_UP> 
+docker0          DOWN           8e:da:12:77:7f:51 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+qmx0             UNKNOWN        <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> 
+---QDISC---
+qdisc noqueue 0: dev lo root refcnt 2 
+qdisc fq_codel 0: dev eth0 root refcnt 2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+qdisc fq_codel 0: dev l2tpeth0 root refcnt 2 limit 10240p flows 1024 quantum 1460 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 
+qdisc mq 0: dev ct-kh-24001-r root 
+qdisc fq 0: dev ct-kh-24001-r parent :1 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023 bands 3 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 weights 589824 196608 65536 quantum 18000b initial_quantum 90000b low_rate_threshold 550Kbit refill_delay 40ms timer_slack 10us horizon 10s horizon_drop offload_horizon 0us 
+qdisc fq 0: dev ct-kh-24001 root refcnt 2 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023 bands 3 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 weights 589824 196608 65536 quantum 2936b initial_quantum 14680b low_rate_threshold 550Kbit refill_delay 40ms timer_slack 10us horizon 10s horizon_drop offload_horizon 0us 
+qdisc noqueue 0: dev docker0 root refcnt 2 
+qdisc fq 0: dev qmx0 root refcnt 2 limit 10000p flow_limit 100p buckets 1024 orphan_mask 1023 bands 3 priomap 1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1 weights 589824 196608 65536 quantum 2760b initial_quantum 13800b low_rate_threshold 550Kbit refill_delay 40ms timer_slack 10us horizon 10s horizon_drop offload_horizon 0us 
+---PROCNETDEV---
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo: 984580426 3427595    0    0    0     0          0         0 984580426 3427595    0    0    0     0       0          0
+  eth0: 85625771511 58446768    0    0    0     0          0         0 91319468802 66418441    0    0    0     0       0          0
+l2tpeth0: 23901403   71716    2    2    0     0          0         0 96433926   88153    0    0    0     0       0          0
+  gre0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+gretap0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+erspan0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+ip6tnl0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+ip6gre0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+ tunl0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+  sit0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+ct-kh-24001-r: 6260523291 24314809    0    0    0     0          0         0 64029061541 51299933    0    3    0     0       0          0
+ct-kh-24001: 5676967587 24314801    0    0    0     0          0         0 60803208163 26637814    0    0    0     0       0          0
+docker0:       0       0    0    0    0     0          0         0        0       0    0    2    0     0       0          0
+  qmx0: 1104361    9443    0    0    0     0          0         0 100333845   74088    0    0    0     0       0          0

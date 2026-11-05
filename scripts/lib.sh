@@ -10,9 +10,12 @@ QL_IRAN_HOST="${QL_IRAN_HOST:-qlab-iran}"
 QL_GERMANY_HOST="${QL_GERMANY_HOST:-qlab-germany}"
 
 # Product repos (built from the local checkouts next to this repo).
+# QL_AGENT_REPO can point at a worktree (phase3/engines builds from there).
 WORKSPACES_ROOT="$(cd "$QLAB_ROOT/../.." && pwd)"
-AGENT_REPO="$WORKSPACES_ROOT/01-REPOSITORIES/quantum-agent"
+AGENT_REPO="${QL_AGENT_REPO:-$WORKSPACES_ROOT/01-REPOSITORIES/quantum-agent}"
 PANEL_REPO="$WORKSPACES_ROOT/01-REPOSITORIES/quantum-panel"
+# Engine-artifact signing key pinned into agent builds (public half only).
+QL_ENGINE_PUB_B64="${QL_ENGINE_PUB_B64:-$(cat "$QLAB_ROOT/results/phase3/engine-pub.b64" 2>/dev/null || true)}"
 
 # Panel service constants (must match what the product writes/uses).
 PANEL_BIN_REMOTE="/usr/local/bin/quantum-panel"

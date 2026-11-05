@@ -1,0 +1,23 @@
+/etc/tinc:
+total 16
+drwxr-xr-x   3 root root 4096 Oct 29 01:00 .
+drwxr-xr-x 119 root root 4096 Nov  5 06:10 ..
+drwxr-xr-x   3 root root 4096 Oct 29 01:00 matrix
+-rw-r--r--   1 root root  195 Oct 27 20:19 nets.boot
+
+/etc/tinc/matrix:
+total 28
+drwxr-xr-x 3 root root 4096 Oct 29 01:00 .
+drwxr-xr-x 3 root root 4096 Oct 29 01:00 ..
+drwxr-xr-x 2 root root 4096 Oct 29 01:00 hosts
+-rw------- 1 root root 3244 Oct 29 01:00 rsa_key.priv
+-rwxr-xr-x 1 root root  113 Oct 29 01:00 tinc-down
+-rwxr-xr-x 1 root root   91 Oct 29 01:00 tinc-up
+-rw------- 1 root root  159 Oct 29 01:00 tinc.conf
+
+/etc/tinc/matrix/hosts:
+total 16
+drwxr-xr-x 2 root root 4096 Oct 29 01:00 .
+drwxr-xr-x 3 root root 4096 Oct 29 01:00 ..
+-rw-r--r-- 1 root root  883 Oct 29 01:00 main
+-rw------- 1 root root  812 Oct 29 01:00 matrixf6576ddc3

@@ -1,0 +1,5 @@
+mm_send_fd: sendmsg(2): Broken pipe
+mux_client_request_session: send fds failed
+[21:01:35] ssh qlab-iran failed (rc=255, attempt 1/3); retrying in 8s
+mux_client_request_session: read from master failed: Connection reset by peer
+ControlSocket /tmp/qlab-cmux/cm-root@185.226.119.74:22 already exists, disabling multiplexing

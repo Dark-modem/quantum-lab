@@ -1,0 +1,293 @@
+table ip nat {
+	chain POSTROUTING {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 172.17.0.0/16 oifname != "docker0" counter packets 0 bytes 0 masquerade
+		ip saddr 10.99.0.0/24 oifname "eth0" counter packets 691 bytes 50641 masquerade
+		ip saddr 172.31.99.0/24 oifname "eth0" counter packets 1144 bytes 68640 masquerade
+		 counter packets 1986670 bytes 143615008 jump QMX_OUT
+	}
+
+	chain QMX_IN {
+		ip daddr 91.107.179.252 tcp dport 5201 counter packets 35 bytes 2100 dnat to 10.254.231.2:5201
+		ip daddr 91.107.179.252 udp dport 5201 counter packets 0 bytes 0 dnat to 10.254.231.2:5201
+	}
+
+	chain QMX_OUT {
+		ip daddr 10.254.231.2 oifname "qmx0" counter packets 388 bytes 31752 snat to 10.254.231.1
+	}
+
+	chain PREROUTING {
+		type nat hook prerouting priority dstnat; policy accept;
+		 counter packets 468989 bytes 31941037 jump QMX_IN
+		fib daddr type local counter packets 449201 bytes 30494678 jump DOCKER
+	}
+
+	chain DOCKER {
+	}
+
+	chain OUTPUT {
+		type nat hook output priority dstnat; policy accept;
+		ip daddr != 127.0.0.0/8 fib daddr type local counter packets 0 bytes 0 jump DOCKER
+	}
+}
+table ip6 nat {
+	chain POSTROUTING {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip6 saddr fd3a:9c21:7c2e:99::/64 oifname "eth0" counter packets 637 bytes 50960 xt target "MASQUERADE"
+	}
+
+	chain DOCKER {
+	}
+
+	chain PREROUTING {
+		type nat hook prerouting priority dstnat; policy accept;
+		fib daddr type local counter packets 102 bytes 23084 jump DOCKER
+	}
+
+	chain OUTPUT {
+		type nat hook output priority dstnat; policy accept;
+		ip6 daddr != ::1 fib daddr type local counter packets 0 bytes 0 jump DOCKER
+	}
+}
+table ip raw {
+	chain PREROUTING {
+		type filter hook prerouting priority raw; policy accept;
+		ip saddr 172.31.1.1 ip protocol ipencap  counter packets 0 bytes 0 notrack
+		ip saddr 172.31.1.1 ip protocol ipv6  counter packets 0 bytes 0 notrack
+		ip saddr 172.31.1.1 ip protocol gre  counter packets 24295940 bytes 6255369072 notrack
+		ip saddr 172.31.1.1 ip protocol esp  counter packets 0 bytes 0 notrack
+		ip saddr 172.31.1.1 ip protocol etherip  counter packets 0 bytes 0 notrack
+		ip saddr 172.31.1.1 ip protocol l2tp  counter packets 0 bytes 0 notrack
+	}
+
+	chain OUTPUT {
+		type filter hook output priority raw; policy accept;
+		ip daddr 172.31.1.1 ip protocol ipencap  counter packets 0 bytes 0 notrack
+		ip daddr 172.31.1.1 ip protocol ipv6  counter packets 0 bytes 0 notrack
+		ip daddr 172.31.1.1 ip protocol gre  counter packets 26618440 bytes 61774456623 notrack
+		ip daddr 172.31.1.1 ip protocol esp  counter packets 0 bytes 0 notrack
+		ip daddr 172.31.1.1 ip protocol etherip  counter packets 0 bytes 0 notrack
+		ip daddr 172.31.1.1 ip protocol l2tp  counter packets 0 bytes 0 notrack
+	}
+}
+table ip mangle {
+	chain OUTPUT {
+		type route hook output priority mangle; policy accept;
+	}
+
+	chain POSTROUTING {
+		type filter hook postrouting priority mangle; policy accept;
+	}
+
+	chain FORWARD {
+		type filter hook forward priority mangle; policy accept;
+		oifname "gre-tunnel" tcp flags & (syn | rst) == syn counter packets 0 bytes 0 tcp option maxseg size set 1340
+		 counter packets 1022 bytes 51744 jump QMX_MSS
+		oifname "ct-kh-24001" tcp flags & (syn | rst) == syn  counter packets 0 bytes 0 tcp option maxseg size set rt mtu
+		iifname "ct-kh-24001" tcp flags & (syn | rst) == syn  counter packets 0 bytes 0 tcp option maxseg size set rt mtu
+	}
+
+	chain QMX_MSS {
+		oifname "qmx0" tcp flags & (syn | rst) == syn counter packets 38 bytes 2280 tcp option maxseg size set 1340
+		iifname "qmx0" tcp flags & (syn | rst) == syn counter packets 0 bytes 0 tcp option maxseg size set 1340
+	}
+}
+table ip filter {
+	chain INPUT {
+		type filter hook input priority filter; policy accept;
+		udp dport 55555 counter packets 17 bytes 2469 accept
+		udp dport 443 counter packets 43 bytes 25613 accept
+	}
+
+	chain OUTPUT {
+		type filter hook output priority filter; policy accept;
+	}
+
+	chain QMX_FWD {
+		iifname "qmx0" ct state related,established counter packets 36 bytes 1584 accept
+		ip daddr 10.254.231.2 oifname "qmx0" tcp dport 5201 counter packets 38 bytes 2280 accept
+		ip daddr 10.254.231.2 oifname "qmx0" udp dport 5201 counter packets 0 bytes 0 accept
+	}
+
+	chain FORWARD {
+		type filter hook forward priority filter; policy accept;
+		counter packets 653 bytes 32944 jump DOCKER-USER
+		counter packets 653 bytes 32944 jump DOCKER-FORWARD
+		 counter packets 1022 bytes 51744 jump QMX_FWD
+	}
+
+	chain DOCKER {
+		iifname != "docker0" oifname "docker0" counter packets 0 bytes 0 drop
+	}
+
+	chain DOCKER-FORWARD {
+		counter packets 653 bytes 32944 jump DOCKER-CT
+		counter packets 653 bytes 32944 jump DOCKER-INTERNAL
+		counter packets 653 bytes 32944 jump DOCKER-BRIDGE
+		iifname "docker0" counter packets 0 bytes 0 accept
+	}
+
+	chain DOCKER-BRIDGE {
+		oifname "docker0" counter packets 0 bytes 0 jump DOCKER
+	}
+
+	chain DOCKER-CT {
+		oifname "docker0" ct state related,established counter packets 0 bytes 0 accept
+	}
+
+	chain DOCKER-INTERNAL {
+	}
+
+	chain DOCKER-USER {
+	}
+}
+table ip6 filter {
+	chain INPUT {
+		type filter hook input priority filter; policy accept;
+		tcp dport 8443 counter packets 0 bytes 0 accept
+	}
+
+	chain DOCKER {
+	}
+
+	chain DOCKER-FORWARD {
+		counter packets 0 bytes 0 jump DOCKER-CT
+		counter packets 0 bytes 0 jump DOCKER-INTERNAL
+		counter packets 0 bytes 0 jump DOCKER-BRIDGE
+	}
+
+	chain DOCKER-BRIDGE {
+	}
+
+	chain DOCKER-CT {
+	}
+
+	chain DOCKER-INTERNAL {
+	}
+
+	chain FORWARD {
+		type filter hook forward priority filter; policy accept;
+		counter packets 0 bytes 0 jump DOCKER-USER
+		counter packets 0 bytes 0 jump DOCKER-FORWARD
+	}
+
+	chain DOCKER-USER {
+	}
+}
+---IPT4---
+# Generated by iptables-save v1.8.11 (nf_tables) on Thu Nov  5 17:33:14 2026
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [1022:51744]
+:OUTPUT ACCEPT [140957006:219268820509]
+:POSTROUTING ACCEPT [140688844:219029988065]
+:QMX_MSS - [0:0]
+-A FORWARD -o gre-tunnel -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340
+-A FORWARD -m comment --comment quantum-matrix -j QMX_MSS
+-A FORWARD -o ct-kh-24001 -p tcp -m tcp --tcp-flags SYN,RST SYN -m comment --comment "ctunnel:kh-24001" -j TCPMSS --clamp-mss-to-pmtu
+-A FORWARD -i ct-kh-24001 -p tcp -m tcp --tcp-flags SYN,RST SYN -m comment --comment "ctunnel:kh-24001" -j TCPMSS --clamp-mss-to-pmtu
+-A QMX_MSS -o qmx0 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340
+-A QMX_MSS -i qmx0 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1340
+COMMIT
+# Completed on Thu Nov  5 17:33:14 2026
+# Generated by iptables-save v1.8.11 (nf_tables) on Thu Nov  5 17:33:14 2026
+*raw
+:PREROUTING ACCEPT [108609230:67290476869]
+:OUTPUT ACCEPT [141051689:219272607829]
+-A PREROUTING -s 172.31.1.1/32 -p 4 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A PREROUTING -s 172.31.1.1/32 -p 41 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A PREROUTING -s 172.31.1.1/32 -p 47 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A PREROUTING -s 172.31.1.1/32 -p esp -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A PREROUTING -s 172.31.1.1/32 -p 97 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A PREROUTING -s 172.31.1.1/32 -p 115 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A OUTPUT -d 172.31.1.1/32 -p 4 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A OUTPUT -d 172.31.1.1/32 -p 41 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A OUTPUT -d 172.31.1.1/32 -p 47 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A OUTPUT -d 172.31.1.1/32 -p esp -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A OUTPUT -d 172.31.1.1/32 -p 97 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+-A OUTPUT -d 172.31.1.1/32 -p 115 -m comment --comment "ctunnel:kh-24001" -j CT --notrack
+COMMIT
+# Completed on Thu Nov  5 17:33:14 2026
+# Generated by iptables-save v1.8.11 (nf_tables) on Thu Nov  5 17:33:14 2026
+*filter
+:INPUT ACCEPT [107953770:66870308213]
+:FORWARD ACCEPT [3:180]
+:OUTPUT ACCEPT [140533147:218947867436]
+:DOCKER - [0:0]
+:DOCKER-BRIDGE - [0:0]
+:DOCKER-CT - [0:0]
+:DOCKER-FORWARD - [0:0]
+:DOCKER-INTERNAL - [0:0]
+:DOCKER-USER - [0:0]
+:QMX_FWD - [0:0]
+-A INPUT -p udp -m udp --dport 55555 -j ACCEPT
+-A INPUT -p udp -m udp --dport 443 -j ACCEPT
+-A FORWARD -j DOCKER-USER
+-A FORWARD -j DOCKER-FORWARD
+-A FORWARD -m comment --comment quantum-matrix -j QMX_FWD
+-A DOCKER ! -i docker0 -o docker0 -j DROP
+-A DOCKER-BRIDGE -o docker0 -j DOCKER
+-A DOCKER-CT -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A DOCKER-FORWARD -j DOCKER-CT
+-A DOCKER-FORWARD -j DOCKER-INTERNAL
+-A DOCKER-FORWARD -j DOCKER-BRIDGE
+-A DOCKER-FORWARD -i docker0 -j ACCEPT
+-A QMX_FWD -i qmx0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A QMX_FWD -d 10.254.231.2/32 -o qmx0 -p tcp -m tcp --dport 5201 -j ACCEPT
+-A QMX_FWD -d 10.254.231.2/32 -o qmx0 -p udp -m udp --dport 5201 -j ACCEPT
+COMMIT
+# Completed on Thu Nov  5 17:33:14 2026
+# Generated by iptables-save v1.8.11 (nf_tables) on Thu Nov  5 17:33:14 2026
+*nat
+:PREROUTING ACCEPT [468504:31911937]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [1985009:143497482]
+:POSTROUTING ACCEPT [2153722:155293281]
+:DOCKER - [0:0]
+:QMX_IN - [0:0]
+:QMX_OUT - [0:0]
+-A PREROUTING -m comment --comment quantum-matrix -j QMX_IN
+-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
+-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
+-A POSTROUTING -s 10.99.0.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 172.31.99.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -m comment --comment quantum-matrix -j QMX_OUT
+-A QMX_IN -d 91.107.179.252/32 -p tcp -m tcp --dport 5201 -j DNAT --to-destination 10.254.231.2:5201
+-A QMX_IN -d 91.107.179.252/32 -p udp -m udp --dport 5201 -j DNAT --to-destination 10.254.231.2:5201
+-A QMX_OUT -d 10.254.231.2/32 -o qmx0 -j SNAT --to-source 10.254.231.1
+COMMIT
+# Completed on Thu Nov  5 17:33:14 2026
+---IPT6---
+# Generated by ip6tables-save v1.8.11 (nf_tables) on Thu Nov  5 17:33:14 2026
+*filter
+:INPUT ACCEPT [5106841:32015669346]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:DOCKER - [0:0]
+:DOCKER-BRIDGE - [0:0]
+:DOCKER-CT - [0:0]
+:DOCKER-FORWARD - [0:0]
+:DOCKER-INTERNAL - [0:0]
+:DOCKER-USER - [0:0]
+-A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+-A FORWARD -j DOCKER-USER
+-A FORWARD -j DOCKER-FORWARD
+-A DOCKER-FORWARD -j DOCKER-CT
+-A DOCKER-FORWARD -j DOCKER-INTERNAL
+-A DOCKER-FORWARD -j DOCKER-BRIDGE
+COMMIT
+# Completed on Thu Nov  5 17:33:14 2026
+# Generated by ip6tables-save v1.8.11 (nf_tables) on Thu Nov  5 17:33:14 2026
+*nat
+:PREROUTING ACCEPT [102:23084]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [500517:50584320]
+:POSTROUTING ACCEPT [506684:51420764]
+:DOCKER - [0:0]
+-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+-A OUTPUT ! -d ::1/128 -m addrtype --dst-type LOCAL -j DOCKER
+-A POSTROUTING -s fd3a:9c21:7c2e:99::/64 -o eth0 -j MASQUERADE
+COMMIT
+# Completed on Thu Nov  5 17:33:14 2026

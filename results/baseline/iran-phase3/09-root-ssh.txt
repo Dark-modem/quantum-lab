@@ -1,0 +1,12 @@
+no crontab for root
+---AK---
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/CtC8JCG4YJqQRRLXGDCxOyoeJ+rRFhS38+O/d6Yn3 freebuff-node-access
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBI/1xThbHu/xdsYKjjpwXlOrHCgu28fzaU/i6EB51/u tunnel-lab-stage0
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpUE+xO17aFUXxlZSwSVJAvUc+zvZ/JNFDEfKCHNvkA quantum-lab-phase1c
+---DIR---
+total 20
+drwx------ 2 root root 4096 Nov  3 20:28 .
+drwx------ 9 root root 4096 Nov  3 20:28 ..
+-rw------- 1 root root  302 Nov  4 19:32 authorized_keys
+-rw------- 1 root root  978 Oct 27 00:12 known_hosts
+-rw-r--r-- 1 root root  142 Oct 27 00:12 known_hosts.old
