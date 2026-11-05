@@ -130,7 +130,7 @@ measure_outage() {
     "$name" "$t0" "$detected" \
     "$ger_detected" \
     "$recovered_val" \
-    "${health_flip_s:-null}" "$(printf '%s' "$health_before" | tr -d '\n')" "$(printf '%s' "$(agent_health_state "$QL_IRAN_HOST")" | tr -d '\n')")
+    "${health_flip_s:-null}" "$(printf '%s' "$health_before" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo null)" "$(printf '%s' "$(agent_health_state "$QL_IRAN_HOST")" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo null)")
   printf '%s\n' "$row" >>"$ROWS_FILE"
   log "[$name] detected=${detected}ms recovered=${recovered:-NA}ms"
   # always clean the lab state
