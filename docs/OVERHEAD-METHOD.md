@@ -118,3 +118,15 @@ sampler, and reports are engine-agnostic (see `ENGINE-GUIDE.md` in
    what actually flew — so on lossy paths the wire/payload ratio grows
    beyond pure header overhead. That effect is real cost and therefore
    part of the answer, not a bug.
+6. **Loss-dominated runs distort the ratio in both directions.** Measured
+   against *received* bytes (down-direction UDP), ratio = real overhead ÷
+   delivery fraction → balloons (observed 7.3 at 91 % loss). Measured
+   against *sent* bytes (up-direction UDP), ratio counts only datagrams
+   that left the host → collapses below 1 (observed 0.58 — the rest was
+   dropped in the host qdisc before the wire). Only 0 %-loss rows are
+   clean per-packet overhead signals; results files flag this.
+7. **Shared hosts.** The lab servers host other workloads (a Pasarguard
+   node container was deployed on the Germany host by another party during
+   phase 1C). It wipes foreign nftables tables; the harness verifies
+   counters around every run (`counters_valid`), retries wiped runs, and
+   marks the affected results.
