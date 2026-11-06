@@ -1,0 +1,1 @@
+{"date":"2026-11-06","pass":0,"fails":3,"checks":["{\"verdict\": \"FAIL\", \"name\": \"\", \"detail\": \"panel-login http= csrf=\"},{\"verdict\": \"FAIL\", \"name\": \"\", \"detail\": \"mint-token-iran response=\"},{\"verdict\": \"FAIL\", \"name\": \"\", \"detail\": \"agents-online online=0 (last=)\"}"]}
