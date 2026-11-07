@@ -30,6 +30,14 @@ Servers: germany (ARM64, panel HTTPS :7443) + iran (amd64, agent) — state snap
 - **Confirmed outcome (verified)**: re-applied + armed → timer stopped (confirm-equivalent) → key-only state **persisted past the original 120 s deadline** and holds.
 - Module limitation on this OS (reported exactly): the module writes `sshd_config.d/60-quantum-hardening.conf`, but this host carries `01-arvan-root-login.conf` (PasswordAuthentication yes) — sshd first-value-wins makes the module's 60- drop-in ineffective on arvan-image hosts. The manual equivalent used a `00-` drop-in.
 
+## Weights 70/30 → 30/70 flip (VERIFIED in the kernel)
+
+- 70/30: balancer rendered `numgen inc mod 70 map {0-69: 10.254.232.2}` (matrix2's 70 buckets; the fail-closed frp target has none). Weight flip to 30/70 + push → the rule **re-rendered live** to `numgen inc mod 30 map {0-29: 10.254.232.2}`. The weights plumbing is verified end to end in the kernel.
+- **1000-connection split: UNVERIFIED (blocked)** — three attempts (from the real user position and hairpinned from iran): 99.7 %+ of connections die on the current path (evening loss; a hairpin source is architecturally broken by the asymmetric return path). The sink+generator scripts are in the lab repo (`out/gen1000-local.py`, iran `/tmp/sink8443.py`) for a night-window rerun.
+- **Tunnel-kill failover (VERIFIED)**: SIGKILL tincd on iran → systemd respawn → mesh re-established → **8 s** data-plane recovery; the balancer rule stayed rendered throughout.
+- **Panel death (VERIFIED)**: panel stopped → matrix2 mesh **ALIVE**, balancer rule intact (kernel state, panel-independent); restart → agents reconnected, **no revision storm** (one repeated frp start error = the documented fail-closed slot; zero revision churn).
+- **Usage API per direction (VERIFIED)**: `GET /api/mesh/usage?topology_id=1` → `billable/download_wire=2633064`, `billable/upload_wire=2098177`, payload 0 (matrix reports wire only), note "real bytes; no coefficient is ever applied"; `?tunnel_id=1` scopes per tunnel (`wire_rx=4178321`, `wire_tx=4866877`).
+
 ## Panel credentials (RC2 panel — shown once, per the task)
 
 - URL: **https://91.107.179.252:7443/dlk2OUrsAGRv/** (self-signed — accept the exception)

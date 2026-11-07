@@ -36,3 +36,12 @@ Date: 2026-11-07 · By the phase-5 acceptance run (RC2 bundle). Every item was h
 
 - Bundle signature + checksum verification; `--verify-only` flows; idempotent installs.
 - Panel HTTPS after the ownership fixes; WSS agent enrollment; mesh API (datacenters/servers/topology generate/tunnels/weights/forwards/push); DesiredV2 push + ack; matrix provisioning (after clearing stale chains); hardening module semantics (drop-in rendering is correct — the placement/precedence is the issue, item 10).
+
+## Acceptance run additions (RC2, 2026-11-07)
+
+16. **§3 enroll command omits the panel base path.** The agent posts the enroll to `<server>/api/agent/enroll` — the runbook's `--server https://IP:7443` (no base path) 404s because the panel registers the enroll under its random base path. The base path is only learnable from the initial-password output — the runbook should say: use the FULL URL printed at panel install (including `/<base>`) as `--server`. (Bootstrap-route request noted in the FRP review.)
+17. **RELEASE-READY.md §"Installer commands" repeats the stale hash** (00c4b080…) — same issue as item 1; the installer refuses it. Always take the hash from the bundle's signed `checksums.txt`.
+18. **Mesh matrix tunnel vs the v1 provisioning flow.** A mesh topology with a `matrix` slot starts the matrix driver against an instance that only exists after the v1 `agent-tunnels` provisioning ("no owned Matrix network"). The operator flow is: create the tunnel via Agent Tunnels (provisions tinc), THEN the mesh topology slot referencing that instance. The runbook's §4 should document the ordering (or the compiler should auto-provision).
+19. **A failed provisioning leaves QMX_* iptables chains that block every retry** ("chain QMX_IN already exists; refusing to adopt it"). The teardown of the tombstoned tunnel removes them eventually, but retries in between all fail. Document the manual cleanup (`iptables -t nat -F QMX_IN; …`) or make provisioning idempotent.
+20. **Instance allocation after a tombstone**: a recreated tunnel may get a different instance number (matrix2 vs matrix) — the operator must read the instance from the Agent Tunnels page and use it in the mesh slot params (we hit exactly this).
+21. **The balancer's PREROUTING DNAT cannot be measured from the balancer host itself** (locally-generated traffic skips PREROUTING) nor from the node end (the asymmetric return path breaks the NAT hairpin). The split measurement source must be a real external client. The runbook's §4 weights step should note this.
