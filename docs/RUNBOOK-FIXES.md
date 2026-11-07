@@ -45,3 +45,9 @@ Date: 2026-11-07 · By the phase-5 acceptance run (RC2 bundle). Every item was h
 19. **A failed provisioning leaves QMX_* iptables chains that block every retry** ("chain QMX_IN already exists; refusing to adopt it"). The teardown of the tombstoned tunnel removes them eventually, but retries in between all fail. Document the manual cleanup (`iptables -t nat -F QMX_IN; …`) or make provisioning idempotent.
 20. **Instance allocation after a tombstone**: a recreated tunnel may get a different instance number (matrix2 vs matrix) — the operator must read the instance from the Agent Tunnels page and use it in the mesh slot params (we hit exactly this).
 21. **The balancer's PREROUTING DNAT cannot be measured from the balancer host itself** (locally-generated traffic skips PREROUTING) nor from the node end (the asymmetric return path breaks the NAT hairpin). The split measurement source must be a real external client. The runbook's §4 weights step should note this.
+
+## Night-window split run additions (2026-11-08)
+
+22. **The weighted render normalizes over HEALTHY targets only** — a fail-closed/weight-0 target's buckets vanish and the modulus shrinks (70/30 configured rendered as mod 60 30/30 when matrix3's row read 30). Correct behavior for exclusions, but the operator-facing weights then do not match the kernel rule. The weights UI should show the effective (post-exclusion) split.
+23. **The numgen `inc` split is connection-count granular, not weight-exact** — the observed per-target ratio (74/26) diverged from the rendered buckets. For weight-exact splits use `jhash` per-source with explicit buckets, or a user-space rotator.
+24. **The sink/logger stdout goes to journald, not the redirect file** — the measurement scripts must read `journalctl -u <unit>` (the phase-5 job's row-file readout raced and lost the per-rep counts; the journal retained them).
