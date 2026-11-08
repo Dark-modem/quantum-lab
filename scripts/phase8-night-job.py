@@ -40,7 +40,7 @@ COOKIE = os.path.join(OUT, "panel-https-cookies.txt")
 PANEL = "91.107.179.252"
 IRAN_HOST = "qlab-iran"
 GER_HOST = "qlab-germany"
-LISTEN_PORT = 8443
+LISTEN_PORT = 8202  # 8443 is route-blocked (intercepted); 8202 passes — verified live
 WINDOW_START_H = 0.5   # 00:30 Tehran
 WINDOW_END_H = 5.0
 DEADLINE = time.time() + 8 * 3600
@@ -106,7 +106,7 @@ def ssh(host, cmd, timeout=90):
     return r.stdout.strip()
 
 
-def conn_batch(n, workers=12):
+def conn_batch(n, workers=6):
     import socket
     def one(i):
         try:
@@ -128,14 +128,25 @@ def sink_restart():
 
 
 def sink_counts():
-    out = ssh(IRAN_HOST, "journalctl -u frp-sink --since '-90 s' --no-pager | grep COUNTS | tail -1")
-    m = re.search(r"COUNTS (\{.*\})", out)
-    if not m:
-        return {}
-    try:
-        return {k: int(v) for k, v in json.loads(m.group(1)).items()}
-    except Exception:
-        return {}
+    """Per-target counts from BOTH sink units: frp-sink (8443) counts the
+    frp path (dst 127.0.0.1); frp-sink2 (8202) counts the matrix path
+    (dst 10.254.231.2). Keys normalized by target."""
+    out = {"matrix": {}, "frp": {}}
+    j1 = ssh(IRAN_HOST, "journalctl -u frp-sink --since '-120 s' --no-pager | grep COUNTS | tail -1")
+    m = re.search(r"COUNTS (\{.*\})", j1)
+    if m:
+        try:
+            out["frp"] = {k: int(v) for k, v in json.loads(m.group(1)).items()}
+        except Exception:
+            pass
+    j2 = ssh(IRAN_HOST, "journalctl -u frp-sink2 --since '-120 s' --no-pager | grep COUNTS2 | tail -1")
+    m = re.search(r"COUNTS2 (\{.*\})", j2)
+    if m:
+        try:
+            out["matrix"] = {k: int(v) for k, v in json.loads(m.group(1)).items()}
+        except Exception:
+            pass
+    return out
 
 
 def measure_split(reps=3, n=1000):
@@ -366,10 +377,10 @@ def engine_matrix(engines, carriers):
 
 def main():
     log("phase8 night job started")
-    results = {"started": T0, "window": None, "audit_70_30": None, "split_70_30": None,
-               "audit_30_70": None, "split_30_70": None, "failover": None,
-               "engine_matrix": None, "panel_death": None, "usage": None,
-               "unverified": []}
+    results = {"started": T0, "window": None, "phase_matrix_only": None,
+               "phase_frp_only": None, "phase_70_30": None, "phase_30_70": None,
+               "failover": None, "engine_matrix": None, "panel_death": None,
+               "usage": None, "unverified": []}
 
     # wait for the night window + a usable path
     got_window = False
@@ -377,7 +388,7 @@ def main():
         now = time.gmtime()
         hour = (now.tm_hour + now.tm_min / 60.0 + 3.5) % 24  # Tehran = UTC+3:30
         in_window = WINDOW_START_H <= hour < WINDOW_END_H
-        ok, fail = conn_batch(40, workers=10)
+        ok, fail = conn_batch(40, workers=6)
         rate = ok / max(1, ok + fail)
         log(f"probe: rate={rate:.2f} in_window={in_window}")
         if in_window and rate >= 0.5:
@@ -397,28 +408,26 @@ def main():
         write_results(results)
         return
 
-    # A. 70/30
-    set_weight(1, 70)
-    set_weight(2, 30)
-    set_weight(3, 0)
-    push_agents()
-    time.sleep(8)
-    results["audit_70_30"] = weight_audit("70_30")
-    results["split_70_30"] = measure_split()
+    # A. split phases (the shipped agent's renderer no-ops the matrix leg
+    # when target ports differ — `. 0` — so each phase measures honestly):
+    # matrix-only, frp-only, mixed 70/30, mixed 30/70. 2 reps x 1000 each.
+    def phase(name, w1, w2):
+        set_weight(1, w1)
+        set_weight(2, w2)
+        set_weight(3, 0)
+        push_agents()
+        time.sleep(8)
+        audit = weight_audit(name)
+        split = measure_split(reps=2, n=1000)
+        log(f"phase {name}: audit nft={audit['germany_nft'][:110]}")
+        return {"audit": audit, "split": split}
 
-    # B. flip 30/70
-    set_weight(1, 30)
-    set_weight(2, 70)
-    push_agents()
-    time.sleep(8)
-    results["audit_30_70"] = weight_audit("30_70")
-    results["split_30_70"] = measure_split()
+    results["phase_matrix_only"] = phase("matrix_100", 100, 0)
+    results["phase_frp_only"] = phase("frp_100", 0, 100)
+    results["phase_70_30"] = phase("mixed_70_30", 70, 30)
+    results["phase_30_70"] = phase("mixed_30_70", 30, 70)
 
-    # C. restore + failover
-    set_weight(1, 70)
-    set_weight(2, 30)
-    push_agents()
-    time.sleep(8)
+    # C. restore + failover (70/30/0 already set by the last phase)
     results["failover"] = {
         "frp_kill": frp_kill_recovery(),
         "frp_blackhole_30s": frp_blackhole_30s(),
@@ -432,7 +441,7 @@ def main():
           "ger_has": ssh(GER_HOST, "command -v iperf3 >/dev/null && echo yes || echo no")}
     results["iperf3_available"] = ip
     if ip["iran_has"] == "yes" and ip["ger_has"] == "yes":
-        ssh(IRAN_HOST, "systemctl stop frp-sink; pkill -x iperf3; iperf3 -s -p 8443 -D")
+        ssh(IRAN_HOST, "systemctl stop frp-sink; pkill -x iperf3; iperf3 -s -p 8443 -D; iperf3 -s -p 8202 -D")
         ssh(GER_HOST, "pkill -x iperf3; iperf3 -s -p 5201 -D")
         results["engine_matrix"] = engine_matrix(
             ["matrix", "frp", "backhaul"],
@@ -474,8 +483,8 @@ def write_results(results):
     with open(os.path.join(RESULTS, f"phase8-night-{date}.json"), "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=1)
     md = [f"# Phase-8 night results — {date}", ""]
-    for k in ("window", "audit_70_30", "split_70_30", "audit_30_70", "split_30_70",
-              "failover", "engine_matrix", "panel_death", "usage"):
+    for k in ("window", "phase_matrix_only", "phase_frp_only", "phase_70_30",
+              "phase_30_70", "failover", "engine_matrix", "panel_death", "usage"):
         md.append(f"## {k}\n```json\n{json.dumps(results.get(k), indent=1)[:4000]}\n```\n")
     if results["unverified"]:
         md.append("## unverified\n" + "\n".join(f"- {u}" for u in results["unverified"]))
