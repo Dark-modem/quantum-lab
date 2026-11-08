@@ -263,11 +263,9 @@ def usage_topo():
 
 
 def iperf3_run(target_host, target_port, direction, secs=10, json_out=True):
-    """Run iperf3 FROM the operator machine? No — from iran? The split client
-    is the operator machine; for THROUGHPUT the operator machine's uplink is
-    the bottleneck. Run iperf3 client from IRAN (the lab's standard position)
-    toward germany through the balancer — mirrors the production direction
-    and keeps both endpoints on the lab hosts."""
+    """Run iperf3 from IRAN (the lab's standard client position) toward
+    germany through the balancer — a real external client for the DNAT,
+    mirroring the production direction."""
     flag = "-R " if direction == "down" else ""
     j = "-J" if json_out else ""
     cmd = (f"iperf3 {j} {flag}-c {target_host} -p {target_port} -t {secs} "
@@ -276,16 +274,20 @@ def iperf3_run(target_host, target_port, direction, secs=10, json_out=True):
     return out
 
 
-def parse_iperf_j(out):
+def parse_iperf_j(out, direction="up"):
     try:
         j = json.loads(out)
         end = j.get("end", {})
-        sum_ = end.get("sum_sent", end.get("sum_received", {}))
+        # forward mode: the client sends (sum_sent); reverse (-R): the client
+        # receives (sum_received) — the other sum is the tiny control side.
+        key = "sum_received" if direction == "down" else "sum_sent"
+        sum_ = end.get(key) or end.get("sum_sent") or end.get("sum_received") or {}
         return {"bps": sum_.get("bits_per_second", 0),
                 "retransmits": sum_.get("retransmits", 0),
-                "sent_ok": True}
+                "seconds": sum_.get("seconds"),
+                "ok": True}
     except Exception:
-        return {"sent_ok": False, "raw": out[:200]}
+        return {"ok": False, "raw": out[:200]}
 
 
 def engine_matrix(engines, carriers):
@@ -307,10 +309,10 @@ def engine_matrix(engines, carriers):
         time.sleep(8)
         entry["nft_100"] = ssh(GER_HOST, "nft list chain ip quantum-fwd fw_fw_1_tcp 2>/dev/null | tail -1")
         # iperf3 up + down through the balancer, then the underlay baseline
-        entry["iperf_up"] = parse_iperf_j(iperf3_run(PANEL, LISTEN_PORT, "up"))
-        entry["iperf_down"] = parse_iperf_j(iperf3_run(PANEL, LISTEN_PORT, "down"))
-        entry["underlay_up"] = parse_iperf_j(iperf3_run(PANEL, 5201, "up"))
-        entry["underlay_down"] = parse_iperf_j(iperf3_run(PANEL, 5201, "down"))
+        entry["iperf_up"] = parse_iperf_j(iperf3_run(PANEL, LISTEN_PORT, "up"), "up")
+        entry["iperf_down"] = parse_iperf_j(iperf3_run(PANEL, LISTEN_PORT, "down"), "down")
+        entry["underlay_up"] = parse_iperf_j(iperf3_run(PANEL, 5201, "up"), "up")
+        entry["underlay_down"] = parse_iperf_j(iperf3_run(PANEL, 5201, "down"), "down")
         entry["usage"] = usage_topo()
         # kill the engine process(es) on both ends; measure recovery
         kills = {"matrix": (GER_HOST, "pkill -9 -x tincd"),
