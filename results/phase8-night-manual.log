@@ -1,0 +1,12 @@
+03:27:58 matrix kill: recover_s=11.3
+03:28:56 matrix blackhole: recover_s=53.5 leftover=0
+03:29:55 engine matrix: up=True iperf_up=0.0Mb/s down=0.0Mb/s underlay_up=157.1Mb/s
+03:31:34 frp kill: recover_s=16.9
+03:32:26 frp blackhole: recover_s=46.9 leftover=0
+03:33:25 engine frp: up=True iperf_up=99.8Mb/s down=114.7Mb/s underlay_up=168.2Mb/s
+03:34:32 backhaul kill: recover_s=11.8
+03:35:27 backhaul blackhole: recover_s=50.3 leftover=0
+03:36:30 engine backhaul: up=False iperf_up=0.0Mb/s down=0.0Mb/s underlay_up=179.4Mb/s
+03:37:04 frp kill(final): recover_s=29.5
+03:37:55 frp blackhole: recover_s=47.3 leftover=0
+03:38:02 matrix kill: recover_s=7.0

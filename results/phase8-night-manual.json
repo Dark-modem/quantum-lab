@@ -1,0 +1,120 @@
+{
+ "started": "2026-11-08T23:56:42Z",
+ "engines": {
+  "matrix": {
+   "up_before": true,
+   "nft": "tcp dport 8202 dnat to numgen inc mod 100 map { 0-99 : 10.254.231.2 }:8202",
+   "iperf_up": {
+    "bps": 0,
+    "retransmits": 0,
+    "ok": true
+   },
+   "iperf_down": {
+    "bps": 0,
+    "retransmits": 0,
+    "ok": true
+   },
+   "underlay_up": {
+    "bps": 157075428.19657442,
+    "retransmits": 60106,
+    "ok": true
+   },
+   "underlay_down": {
+    "bps": 1033775571.7664236,
+    "retransmits": 0,
+    "ok": true
+   },
+   "usage": "{\"billable\":{\"download_payload\":0,\"download_wire\":2926809,\"upload_payload\":0,\"upload_wire\":2905156},\"from\":0,\"note\":\"real bytes; no coefficient is ever applied\",\"scope\":\"topology:1\",\"to\":1794182267,\"usage\":{\"wire_rx\":5334189,\"wire_tx\":5946923,\"payload_rx\":0,\"payload_tx\":0}}",
+   "kill": {
+    "recover_s": 11.3
+   },
+   "blackhole": {
+    "recover_s": 53.5,
+    "leftover_rules": "0"
+   },
+   "idle_ps": "3156449 tincd            7136  0.0",
+   "idle_ps_after": "3156449 tincd            7136  0.0"
+  },
+  "frp": {
+   "up_before": true,
+   "nft": "tcp dport 8202 dnat ip to numgen inc mod 100 map { 0-99 : 127.0.0.1 . 8201 }",
+   "iperf_up": {
+    "bps": 99816569.65431124,
+    "retransmits": 17228,
+    "ok": true
+   },
+   "iperf_down": {
+    "bps": 114715028.876705,
+    "retransmits": 0,
+    "ok": true
+   },
+   "underlay_up": {
+    "bps": 168197006.34360427,
+    "retransmits": 51145,
+    "ok": true
+   },
+   "underlay_down": {
+    "bps": 988804750.572159,
+    "retransmits": 0,
+    "ok": true
+   },
+   "usage": "{\"billable\":{\"download_payload\":0,\"download_wire\":2938205,\"upload_payload\":0,\"upload_wire\":2916244},\"from\":0,\"note\":\"real bytes; no coefficient is ever applied\",\"scope\":\"topology:1\",\"to\":1794182477,\"usage\":{\"wire_rx\":5355609,\"wire_tx\":5968311,\"payload_rx\":0,\"payload_tx\":0}}",
+   "kill": {
+    "recover_s": 16.9
+   },
+   "blackhole": {
+    "recover_s": 46.9,
+    "leftover_rules": "0"
+   },
+   "idle_ps": "3157608 frps            18304  0.2",
+   "idle_ps_after": "3157608 frps            18344  0.2"
+  },
+  "backhaul": {
+   "up_before": false,
+   "nft": "tcp dport 8202 counter packets 0 bytes 0 return",
+   "iperf_up": {
+    "bps": 0,
+    "retransmits": 0,
+    "ok": true
+   },
+   "iperf_down": {
+    "bps": 0,
+    "retransmits": 0,
+    "ok": true
+   },
+   "underlay_up": {
+    "bps": 179408429.24260333,
+    "retransmits": 29208,
+    "ok": true
+   },
+   "underlay_down": {
+    "bps": 1024035942.2813904,
+    "retransmits": 0,
+    "ok": true
+   },
+   "usage": "{\"billable\":{\"download_payload\":0,\"download_wire\":2948453,\"upload_payload\":0,\"upload_wire\":2926492},\"from\":0,\"note\":\"real bytes; no coefficient is ever applied\",\"scope\":\"topology:1\",\"to\":1794182660,\"usage\":{\"wire_rx\":5376105,\"wire_tx\":5988807,\"payload_rx\":0,\"payload_tx\":0}}",
+   "kill": {
+    "recover_s": 11.8
+   },
+   "blackhole": {
+    "recover_s": 50.3,
+    "leftover_rules": "0"
+   },
+   "idle_ps": "3158533 backhaul        13944  0.1",
+   "idle_ps_after": "3158533 backhaul        13272  0.1"
+  }
+ },
+ "failover": {
+  "frp_kill": {
+   "recover_s": 29.5
+  },
+  "frp_blackhole": {
+   "recover_s": 47.3,
+   "leftover_rules": "0"
+  },
+  "matrix_kill": {
+   "recover_s": 7.0
+  }
+ },
+ "finished": "2026-11-09T00:08:10Z"
+}
